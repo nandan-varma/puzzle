@@ -6,11 +6,13 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
   return (
     <main>
-      <Link href="/puzzle">Enter Game</Link>
+      
+      <Link href="/puzzle"><button>Enter Game</button></Link>
+      
       <br></br>
-      <Link href="/login">Login</Link>
+      <Link href="/login"><button>Log In</button></Link>
       <br></br>
-      <Link href="/signup">Sign Up</Link>
+      <Link href="/signup"><button>Sign Up</button></Link>
     </main>
   )
 }
