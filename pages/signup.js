@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { auth } from '../lib/firebase'
+import { useRouter } from 'next/router'
 import { createUserWithEmailAndPassword } from "firebase/auth"
 
 const Signup = () => {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
@@ -16,6 +18,7 @@ const Signup = () => {
       await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
         // Signed in 
         const uid = userCredential.user.uid;
+        router.push('/puzzle')
         // ...
       })
     } catch (error) {
