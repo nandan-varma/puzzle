@@ -43,9 +43,9 @@ const Puzzle = () => {
     return (
       <>
       You need to login in order to play.
-      <Link href="/login">LogIn</Link>
+      <Link href="/login"><button>Log In</button></Link>
       or you can 
-      <Link href="/signup">SignUp</Link>
+      <Link href="/signup"><button>Sign Up</button></Link>
       </>
     )
   }

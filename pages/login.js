@@ -48,7 +48,7 @@ const Login = () => {
         </div>
         <button type="submit">Login</button>
       </form>
-      <Link href="/signup">Sign Up</Link>
+      <Link href="/signup"><button>Sign Up</button></Link>
       {error && <p>{error}</p>}
     </div>
   )

@@ -50,6 +50,7 @@ const Signup = () => {
         </div>
         <button type="submit">Sign Up</button>
       </form>
+      <Link href="/login"><button>Log In</button></Link>
       {error && <p>{error}</p>}
     </div>
   )
