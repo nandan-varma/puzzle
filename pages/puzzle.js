@@ -1,16 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { auth ,db } from '../lib/firebase'
+import Link  from 'next/link'
+import { useRouter } from 'next/router'
 import Clue from '../components/clue'
 
-function getUserId(){
-  const uid = auth.currentUser
-  if(uid === null){
-    return "no uid"
-  }
-  return uid;
-}
 
 const Puzzle = () => {
+  
+  function getUserId(){
+    const user = auth.currentUser
+    if(user === null){
+      return null
+    }
+    return user.uid;
+  }
+  const router = useRouter()
   const [clues, setClues] = useState([])
   const [progress, setProgress] = useState({})
 
@@ -22,7 +26,6 @@ const Puzzle = () => {
     }
 
     const getProgress = async () => {
-      const userId = getUserId()
       // TODO
       // implement getUserId function to get the user's unique ID
       const snapshot = await db.ref(`progress/${userId}`).once('value')
@@ -35,8 +38,16 @@ const Puzzle = () => {
     // getProgress()
   }, [])
 
+  const userId = getUserId()
+  if(userId === null){
+    return (
+      <>
+      You need to login in order to play.
+      <Link href="/login">Login</Link>
+      </>
+    )
+  }
   const handleClueChange = (clueId, answer) => {
-    const userId = getUserId()
     // const userId = currentUser()
     const newProgress = { ...progress, [clueId]: answer }
     db.ref(`progress/${userId}`).set(newProgress)
@@ -45,7 +56,7 @@ const Puzzle = () => {
 
   return (
     <div>
-      <p>userid : {getUserId()}</p>
+      <p>userid : {userId}</p>
       <h1>Puzzle</h1>
       {clues.map(clue => (
         <Clue

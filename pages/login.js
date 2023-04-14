@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { auth } from '../lib/firebase'
+import { useRouter } from 'next/router'
 import {signInWithEmailAndPassword} from 'firebase/auth'
 
 console.log(auth)
 
 const Login = () => {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
@@ -13,8 +15,7 @@ const Login = () => {
 
     try {
       await signInWithEmailAndPassword(auth , email, password).then((userCredential) => {
-        const uid = userCredential.user.uid;
-        console.log(uid);
+        router.push('/puzzle')
       })
     } catch (error) {
       setError(error.message)
