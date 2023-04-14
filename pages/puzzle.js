@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react'
-import { db } from '../lib/firebase'
+import { auth ,db } from '../lib/firebase'
 import Clue from '../components/clue'
-import {currentUser} from 'firebase/auth'
+
+function getUserId(){
+  const uid = auth.currentUser
+  if(uid === null){
+    return "no uid"
+  }
+  return uid;
+}
 
 const Puzzle = () => {
   const [clues, setClues] = useState([])
@@ -15,7 +22,7 @@ const Puzzle = () => {
     }
 
     const getProgress = async () => {
-      // const userId = getUserId() 
+      const userId = getUserId()
       // TODO
       // implement getUserId function to get the user's unique ID
       const snapshot = await db.ref(`progress/${userId}`).once('value')
@@ -29,8 +36,8 @@ const Puzzle = () => {
   }, [])
 
   const handleClueChange = (clueId, answer) => {
-    // const userId = getUserId()
-    const userId = currentUser()
+    const userId = getUserId()
+    // const userId = currentUser()
     const newProgress = { ...progress, [clueId]: answer }
     db.ref(`progress/${userId}`).set(newProgress)
     setProgress(newProgress)
@@ -38,6 +45,7 @@ const Puzzle = () => {
 
   return (
     <div>
+      <p>userid : {getUserId()}</p>
       <h1>Puzzle</h1>
       {clues.map(clue => (
         <Clue
