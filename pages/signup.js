@@ -15,7 +15,7 @@ const Signup = () => {
       console.log(password)
       await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
         // Signed in 
-        const user = userCredential.user;
+        const uid = userCredential.user.uid;
         // ...
       })
     } catch (error) {

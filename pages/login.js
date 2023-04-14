@@ -13,10 +13,8 @@ const Login = () => {
 
     try {
       await signInWithEmailAndPassword(auth , email, password).then((userCredential) => {
-        // Signed in 
-        // TODO
-        // const user = userCredential.user;
-        // ...
+        const uid = userCredential.user.uid;
+        console.log(uid);
       })
     } catch (error) {
       setError(error.message)
