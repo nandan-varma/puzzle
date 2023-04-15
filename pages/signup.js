@@ -51,7 +51,7 @@ const Signup = () => {
         <button type="submit">Sign Up</button>
       </form>
       <Link role="button" className="fancy-button"href="/login"><button>Log In</button></Link>
-      <Link role="button" className="fancy-button"href="/google"><button>Sign in With Google</button></Link>
+      {/* <Link role="button" className="fancy-button"href="/google"><button>Sign in With Google</button></Link> */}
       {error && <p>{error}</p>}
     </div>
   )
