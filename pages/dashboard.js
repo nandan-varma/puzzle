@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { auth, db } from '../lib/firebase'
+import { auth, db } from '@/lib/firebase'
 import { signOut } from 'firebase/auth'
-import UserAnalytics from '../components/userAnalytics'
-import UserProgress from '../components/userProgress'
+import UserAnalytics from '@/components/userAnalytics'
+import UserProgress from '@/components/userProgress'
 
 
 const Dashboard = () => {

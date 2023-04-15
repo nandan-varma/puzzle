@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { auth } from '../lib/firebase'
+import { auth } from '@/lib/firebase'
 import { useRouter } from 'next/router'
 import {signInWithEmailAndPassword} from 'firebase/auth'
 import Link  from 'next/link'
@@ -48,7 +48,7 @@ const Login = () => {
         </div>
         <button type="submit">Login</button>
       </form>
-      <Link href="/signup"><button>Sign Up</button></Link>
+      <Link role="button" className="fancy-button"href="/signup"><button>Sign Up</button></Link>
       {error && <p>{error}</p>}
     </div>
   )
