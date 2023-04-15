@@ -72,7 +72,7 @@ const Puzzle = () => {
         <p>As you enter the mansion, you find yourself in a room with four doors, each with a puzzle that needs to be solved to open it. You know that each door will lead you to another room, and eventually, you will reach Mr. Smith. You need to solve all the puzzles to find him and solve the mystery of his disappearance.</p>
       </div>
       <div className="start-button">
-      <Link role="button" className="fancy-button"href="/puzzle"><button>Start</button></Link>
+      <Link role="button" className="fancy-button"href="/memory"><button>Start</button></Link>
 
       </div>
     </div>

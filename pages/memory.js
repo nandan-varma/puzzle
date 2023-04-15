@@ -38,6 +38,7 @@ const MemoryGamePage = ({ shuffledArray }) => {
 
     useEffect(() => {
         if (cards.every((card) => card.flipped)) {
+            // TODO game completed
             router = useRouter();
             router.push("/puzzle");
         }
