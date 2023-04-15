@@ -4,9 +4,6 @@ import { useRouter } from 'next/router'
 import {signInWithEmailAndPassword} from 'firebase/auth'
 import Link  from 'next/link'
 
-
-console.log(auth)
-
 const Login = () => {
   const router = useRouter()
   const [email, setEmail] = useState('')
