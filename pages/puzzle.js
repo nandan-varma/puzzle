@@ -1,8 +1,9 @@
 import { useState, useEffect, use } from 'react'
-import { auth ,db } from '../lib/firebase'
+import { auth ,db } from '@/lib/firebase'
 import Link  from 'next/link'
 import { useRouter } from 'next/router'
-import Clue from '../components/clue'
+import Clue from '@/components/clue'
+import { getDatabase, ref, child, onValue} from 'firebase/database';
 
 
 const Puzzle = () => {
@@ -20,9 +21,11 @@ const Puzzle = () => {
 
   useEffect(() => {
     const getClues = async () => {
-      const snapshot = await db.ref('clues').once('value')
-      const clues = snapshot.val()
-      setClues(clues)
+      onValue(ref(db,'clues'),(snapshot) => {
+        const clues = snapshot.val()
+        console.log(cluse);
+        setClues(clues)
+      })
     }
 
     const getProgress = async () => {
@@ -33,7 +36,7 @@ const Puzzle = () => {
       setProgress(progress)
     }
 
-    // getClues()
+    getClues()
     // TODO
     // getProgress()
   }, [])
@@ -42,10 +45,10 @@ const Puzzle = () => {
   if(userId === null){
     return (
       <>
-      You need to login in order to play.
-      <Link href="/login"><button>Log In</button></Link>
-      or you can 
-      <Link href="/signup"><button>Sign Up</button></Link>
+      You need to login in order to play. <br></br>
+      <Link role="button" className="fancy-button"href="/login"><button>Log In</button></Link>
+      <br></br>or you can  <br></br>
+      <Link role="button" className="fancy-button"href="/signup"><button>Sign Up</button></Link>
       </>
     )
   }
