@@ -20,9 +20,10 @@ export async function getServerSideProps({ context }) {
 }
 
 const MemoryGamePage = ({ shuffledArray }) => {
+    const router = useRouter();
     const [cards, setCards] = useState(() => {
         const shuffledCardValues = shuffledArray
-        return shuffledCardValues.map((value) => ({ value, flipped: false }));
+        return shuffledCardValues.map((value) => ({ value, flipped: true }));
     });
     const [startTime, setStartTime] = useState(null);
     const [elapsedTime, setElapsedTime] = useState(0);
@@ -39,8 +40,7 @@ const MemoryGamePage = ({ shuffledArray }) => {
     useEffect(() => {
         if (cards.every((card) => card.flipped)) {
             // TODO game completed
-            router = useRouter();
-            router.push("/puzzle");
+            router.push({ pathname:'/analytical'});
         }
     }, [cards]);
     const [flippedCards, setFlippedCards] = useState([]);
