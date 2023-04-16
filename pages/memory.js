@@ -23,7 +23,7 @@ const MemoryGamePage = ({ shuffledArray }) => {
     const router = useRouter();
     const [cards, setCards] = useState(() => {
         const shuffledCardValues = shuffledArray
-        return shuffledCardValues.map((value) => ({ value, flipped: true }));
+        return shuffledCardValues.map((value) => ({ value, flipped: false }));
     });
     const [startTime, setStartTime] = useState(null);
     const [elapsedTime, setElapsedTime] = useState(0);

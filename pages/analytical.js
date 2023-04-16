@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { Router, useRouter } from 'next/router';
+import React, { useEffect, useReducer, useState } from 'react';
 
 const castleWords = [
   ['C', 'R', 'O', 'W', 'N', 'S', 'A', 'R', 'M', 'O'],
@@ -18,7 +19,7 @@ const validWords = ["CASTLE", "KNIGHT", "CROWN", "ROYALTY", "ARCHERY", "GUARDS",
 const WordSearch = () => {
   const [selectedCells, setSelectedCells] = useState([]);
   const [foundWords, setFoundWords] = useState([]);
-
+  const router = useRouter();
   const handleMouseDown = (row, col) => {
     setSelectedCells([[row, col]]);
   };
@@ -38,6 +39,11 @@ const WordSearch = () => {
     }
     setSelectedCells([]);
   };
+  useEffect(()=>{
+    if(foundWords.length == 5){
+      router.push({ pathname:'/memory'})
+    }
+  },[foundWords])
 
   const renderCell = (row, col) => {
     const isSelected = selectedCells.some(
