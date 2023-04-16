@@ -10,6 +10,8 @@ img {
   mix-blend-mode:overlay;
 }
 
+/* Memory Game */
+
 .card {
   width: 100px;
   height: 140px;
@@ -52,3 +54,48 @@ img {
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
 }
+
+/* Tower of Hanoi */
+
+.pole {
+  display: inline-block;
+  width: 100px;
+  height: 120px;
+  margin: 0 10px;
+  border: 1px solid purple;
+  vertical-align: bottom;
+}
+
+.blob {
+  height: 20px;
+  margin: 2px;
+  background-color: red;
+  text-align: center;
+}
+
+.blob[data-size="1"] {
+  width: 30px;
+}
+
+.blob[data-size="2"] {
+  width: 50px;
+}
+
+.blob[data-size="3"] {
+  width: 70px;
+}
+
+/* word Search */
+
+.cell {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.selected {
+  background-color: lightblue;
+}
+
+/* Wack a mole */

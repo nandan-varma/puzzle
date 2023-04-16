@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+  }
+  
+  .tower {
+    width: 100px;
+    height: 200px;
+    border: 2px solid black;
+    position: relative;
+  }
+  
+  .tower::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: calc(50% - 2px);
+    width: 4px;
+    height: 20px;
+    background-color: black;
+  }
+  
+  .disk {
+    height: 20px;
+    background-color: blueviolet;
+    position: absolute;
+    bottom: calc(20px + var(--size) * 20px);
+  }
+  
+  .isOver {
+    background-color: lightblue;
+  }
