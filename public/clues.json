@@ -1,0 +1,20 @@
+{
+    "clues" :
+    [
+    {
+      "id": 1,
+      "text": "I am a fruit that is yellow and curved. What am I?",
+      "answer": "banana"
+    },
+    {
+      "id": 2,
+      "text": "I am a vegetable that is orange and grows underground. What am I?",
+      "answer": "carrot"
+    },
+    {
+      "id": 3,
+      "text": "I am a tool used for writing and drawing. What am I?",
+      "answer": "pencil"
+    }
+  ]
+}

@@ -10,7 +10,7 @@ const castleWords = [
   ['N','A','R','C','H','E','R','Y','S','A'],
   ['G','U','A','R','D','S','M','O','A','T'],
   ['E','M','O','N','A','R','C','H','Y','T'],
-  ['S','T','H','R','O','N','E','','S']
+  ['S','T','H','R','O','N','E','P','S','A']
 ];
 
 const validWords = ["CASTLE", "KNIGHT", "CROWN", "ROYALTY", "ARCHERY", "GUARDS", "MOAT", "MONARCHY", "THRONE"];
@@ -45,6 +45,7 @@ const WordSearch = () => {
     );
     return (
       <td
+        key={`${row}+${col}`}
         className={`cell ${isSelected ? 'selected' : ''}`}
         onMouseDown={() => handleMouseDown(row, col)}
         onMouseEnter={() => handleMouseEnter(row, col)}
@@ -72,3 +73,4 @@ const WordSearch = () => {
 };
 
 export default WordSearch;
+
