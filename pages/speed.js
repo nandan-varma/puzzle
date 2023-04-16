@@ -10,15 +10,21 @@ const WhackAMole = () => {
     let timer = setInterval(() => {
       randomHole();
     }, 800);
+    if (gameOver) {
+      clearInterval(timer);
+    }
     return () => clearInterval(timer);
-  }, []);
+  }, [gameOver]);
 
   useEffect(() => {
     let timer = setInterval(() => {
       setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
     }, 1000);
+    if (gameOver) {
+      clearInterval(timer);
+    }
     return () => clearInterval(timer);
-  }, []);
+  }, [gameOver]);
 
   useEffect(() => {
     if (timeLeft === 0) {
@@ -38,12 +44,23 @@ const WhackAMole = () => {
     }
   };
 
+  const replay = () => {
+    setScore(0);
+    setTimeLeft(10);
+    setGameOver(false);
+  };
+
   return (
     <div>
       <h1>Whack-a-Mole</h1>
       <h2>Score: {score}</h2>
       <h2>Time Left: {timeLeft}</h2>
-      {gameOver && <h2>Game Over</h2>}
+      {gameOver && (
+        <>
+          <h2>Game Over</h2>
+          <button onClick={replay}>Replay</button>
+        </>
+      )}
       <table>
         <tbody>
           {[...Array(3)].map((_, rowIndex) => (
