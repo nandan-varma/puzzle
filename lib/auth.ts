@@ -1,5 +1,5 @@
+import { type User, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import { User, onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 
 interface AuthState {
@@ -20,7 +20,10 @@ export const useAuth = (): AuthState => {
     return unsubscribe;
   }, []);
 
-  const signUp = async (email: string, password: string): Promise<User | null> => {
+  const signUp = async (
+    email: string,
+    password: string
+  ): Promise<User | null> => {
     try {
       const { user: newUser } = await auth.createUserWithEmailAndPassword(
         email,

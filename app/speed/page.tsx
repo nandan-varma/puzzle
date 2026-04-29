@@ -60,7 +60,9 @@ export default function Speed() {
       {gameOver && (
         <>
           <h2>Game Over</h2>
-          <button type="button" onClick={replay}>Replay</button>
+          <button type="button" onClick={replay}>
+            Replay
+          </button>
         </>
       )}
       <table>

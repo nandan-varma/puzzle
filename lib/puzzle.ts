@@ -1,4 +1,4 @@
-import { getDatabase, ref, get, update, Database } from 'firebase/database';
+import { Database, get, getDatabase, ref, update } from 'firebase/database';
 import { db } from './firebase';
 
 interface Clue {

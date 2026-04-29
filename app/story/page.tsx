@@ -34,7 +34,9 @@ export default function Story() {
       </div>
       <div className="start-button">
         <Link href="/puzzle-1">
-          <button type="button" className="button">Start</button>
+          <button type="button" className="button">
+            Start
+          </button>
         </Link>
       </div>
     </div>
