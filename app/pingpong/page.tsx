@@ -1,23 +1,25 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 
-const PingPongGame = () => {
+export default function Pingpong() {
   const [leftPlayerPosition, setLeftPlayerPosition] = useState(0);
   const [rightPlayerPosition, setRightPlayerPosition] = useState(0);
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       switch (event.key) {
         case 'w':
-          setLeftPlayerPosition((prevPosition) => prevPosition - 10);
+          setLeftPlayerPosition((prev) => prev - 10);
           break;
         case 's':
-          setLeftPlayerPosition((prevPosition) => prevPosition + 10);
+          setLeftPlayerPosition((prev) => prev + 10);
           break;
         case 'ArrowUp':
-          setRightPlayerPosition((prevPosition) => prevPosition - 10);
+          setRightPlayerPosition((prev) => prev - 10);
           break;
         case 'ArrowDown':
-          setRightPlayerPosition((prevPosition) => prevPosition + 10);
+          setRightPlayerPosition((prev) => prev + 10);
           break;
         default:
           break;
@@ -57,7 +59,7 @@ const PingPongGame = () => {
             height: '80px',
             backgroundColor: 'blue',
           }}
-        ></div>
+        />
         <div
           style={{
             position: 'absolute',
@@ -67,11 +69,8 @@ const PingPongGame = () => {
             height: '80px',
             backgroundColor: 'red',
           }}
-        ></div>
-        {/* Add the ping pong ball or other game elements here */}
+        />
       </div>
     </div>
   );
-};
-
-export default PingPongGame;
+}

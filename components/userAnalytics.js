@@ -1,23 +1,23 @@
-import { useState, useEffect } from 'react'
-import { db } from '@/lib/firebase'
+import { db } from '@/lib/firebase';
+import { useEffect, useState } from 'react';
 
 const UserAnalytics = ({ user }) => {
-  const [analytics, setAnalytics] = useState(null)
+  const [analytics, setAnalytics] = useState(null);
 
   useEffect(() => {
-    const userAnalyticsRef = db.ref(`analytics/${user.id}`)
+    const userAnalyticsRef = db.ref(`analytics/${user.id}`);
     userAnalyticsRef.on('value', (snapshot) => {
-      const data = snapshot.val()
-      setAnalytics(data)
-    })
+      const data = snapshot.val();
+      setAnalytics(data);
+    });
 
     return () => {
-      userAnalyticsRef.off('value')
-    }
-  }, [user.id])
+      userAnalyticsRef.off('value');
+    };
+  }, [user.id]);
 
   if (!analytics) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   return (
@@ -29,7 +29,7 @@ const UserAnalytics = ({ user }) => {
       <p>Clue 2 attempts: {analytics.clue2 || 0}</p>
       <p>Total attempts: {analytics.clue1 + analytics.clue2 || 0}</p>
     </div>
-  )
-}
+  );
+};
 
-export default UserAnalytics
+export default UserAnalytics;

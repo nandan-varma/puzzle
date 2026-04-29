@@ -1,22 +1,22 @@
-import { useState } from 'react'
-import { db } from '@/lib/firebase'
+import { db } from '@/lib/firebase';
+import { useState } from 'react';
 
 const UserProgress = ({ user }) => {
-  const [progress, setProgress] = useState(user.progress || {})
+  const [progress, setProgress] = useState(user.progress || {});
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target
+    const { name, value } = event.target;
     setProgress((prevProgress) => ({
       ...prevProgress,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleSaveProgress = () => {
     db.ref(`users/${user.id}`).update({
       progress,
-    })
-  }
+    });
+  };
 
   return (
     <div>
@@ -25,17 +25,27 @@ const UserProgress = ({ user }) => {
       <br />
       <label>
         Clue 1:
-        <input type="text" name="clue1" value={progress.clue1 || ''} onChange={handleInputChange} />
+        <input
+          type="text"
+          name="clue1"
+          value={progress.clue1 || ''}
+          onChange={handleInputChange}
+        />
       </label>
       <br />
       <label>
         Clue 2:
-        <input type="text" name="clue2" value={progress.clue2 || ''} onChange={handleInputChange} />
+        <input
+          type="text"
+          name="clue2"
+          value={progress.clue2 || ''}
+          onChange={handleInputChange}
+        />
       </label>
       <br />
       <button onClick={handleSaveProgress}>Save Progress</button>
     </div>
-  )
-}
+  );
+};
 
-export default UserProgress
+export default UserProgress;

@@ -1,28 +1,30 @@
-import React, { useState, useEffect } from 'react';
+'use client';
 
-const WhackAMole = () => {
+import { useEffect, useState } from 'react';
+
+export default function Speed() {
   const [score, setScore] = useState(0);
-  const [current, setCurrent] = useState(null);
+  const [current, setCurrent] = useState<number | null>(null);
   const [gameOver, setGameOver] = useState(false);
   const [timeLeft, setTimeLeft] = useState(10);
 
   useEffect(() => {
-    let timer = setInterval(() => {
+    if (gameOver) {
+      return;
+    }
+    const timer = setInterval(() => {
       randomHole();
     }, 800);
-    if (gameOver) {
-      clearInterval(timer);
-    }
     return () => clearInterval(timer);
   }, [gameOver]);
 
   useEffect(() => {
-    let timer = setInterval(() => {
-      setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
-    }, 1000);
     if (gameOver) {
-      clearInterval(timer);
+      return;
     }
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
     return () => clearInterval(timer);
   }, [gameOver]);
 
@@ -33,13 +35,13 @@ const WhackAMole = () => {
   }, [timeLeft]);
 
   const randomHole = () => {
-    let hole = Math.floor(Math.random() * 9);
+    const hole = Math.floor(Math.random() * 9);
     setCurrent(hole);
   };
 
-  const hit = (id) => {
+  const hit = (id: number) => {
     if (id === current) {
-      setScore((prevScore) => prevScore + 1);
+      setScore((prev) => prev + 1);
       setCurrent(null);
     }
   };
@@ -58,25 +60,27 @@ const WhackAMole = () => {
       {gameOver && (
         <>
           <h2>Game Over</h2>
-          <button onClick={replay}>Replay</button>
+          <button type="button" onClick={replay}>Replay</button>
         </>
       )}
       <table>
         <tbody>
-          {[...Array(3)].map((_, rowIndex) => (
+          {Array.from({ length: 3 }).map((_, rowIndex) => (
             <tr key={rowIndex}>
-              {[...Array(3)].map((_, colIndex) => {
-                let id = rowIndex * 3 + colIndex;
+              {Array.from({ length: 3 }).map((_, colIndex) => {
+                const id = rowIndex * 3 + colIndex;
                 return (
                   <td
                     key={id}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => hit(id)}
                     style={{
                       backgroundColor: id === current ? 'green' : 'white',
                       width: '50px',
                       height: '50px',
                     }}
-                  ></td>
+                  />
                 );
               })}
             </tr>
@@ -85,6 +89,4 @@ const WhackAMole = () => {
       </table>
     </div>
   );
-};
-
-export default WhackAMole;
+}
