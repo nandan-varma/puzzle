@@ -9,9 +9,11 @@ export function Container({ children, style }: ContainerProps) {
   return (
     <div
       style={{
+        width: '100%',
         maxWidth: '600px',
         margin: '0 auto',
-        padding: '2rem',
+        padding: '1rem',
+        boxSizing: 'border-box',
         ...style,
       }}
     >
@@ -48,6 +50,7 @@ interface ButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   variant?: 'primary' | 'secondary' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
   style?: Record<string, string | number>;
 }
 
@@ -57,43 +60,36 @@ export function Button({
   onClick,
   disabled,
   variant = 'primary',
+  size = 'md',
   style,
 }: ButtonProps) {
+  const sizes = {
+    sm: { padding: '0.5rem 1rem', fontSize: '0.875rem' },
+    md: { padding: '0.75rem 1.5rem', fontSize: '1rem' },
+    lg: { padding: '1rem 2rem', fontSize: '1.125rem' },
+  };
+
   const baseStyle: Record<string, string | number> = {
-    padding: '0.75rem 1.5rem',
+    minHeight: '44px',
     borderRadius: '8px',
-    fontSize: '1rem',
     fontWeight: '500',
     cursor: disabled ? 'not-allowed' : 'pointer',
     opacity: disabled ? 0.6 : 1,
     transition: 'all 0.2s',
     border: 'none',
+    width: '100%',
+    ...sizes[size],
     ...style,
   };
 
   const variants = {
-    primary: {
-      backgroundColor: '#3b82f6',
-      color: '#fff',
-    },
-    secondary: {
-      backgroundColor: '#6b7280',
-      color: '#fff',
-    },
-    outline: {
-      backgroundColor: 'transparent',
-      color: '#3b82f6',
-      border: '1px solid #3b82f6',
-    },
+    primary: { backgroundColor: '#3b82f6', color: '#fff' },
+    secondary: { backgroundColor: '#6b7280', color: '#fff' },
+    outline: { backgroundColor: 'transparent', color: '#3b82f6', border: '1px solid #3b82f6' },
   };
 
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      style={{ ...baseStyle, ...variants[variant] }}
-    >
+    <button type={type} onClick={onClick} disabled={disabled} style={{ ...baseStyle, ...variants[variant] }}>
       {children}
     </button>
   );
@@ -110,27 +106,10 @@ interface InputProps {
   error?: string;
 }
 
-export function Input({
-  label,
-  id,
-  type = 'text',
-  value,
-  onChange,
-  disabled,
-  placeholder,
-  error,
-}: InputProps) {
+export function Input({ label, id, type = 'text', value, onChange, disabled, placeholder, error }: InputProps) {
   return (
     <div style={{ marginBottom: '1rem' }}>
-      <label
-        htmlFor={id}
-        style={{
-          display: 'block',
-          marginBottom: '0.5rem',
-          fontWeight: '500',
-          color: '#374151',
-        }}
-      >
+      <label htmlFor={id} style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500', color: '#374151' }}>
         {label}
       </label>
       <input
@@ -145,16 +124,12 @@ export function Input({
           padding: '0.75rem',
           borderRadius: '8px',
           border: error ? '1px solid #ef4444' : '1px solid #d1d5db',
-          fontSize: '1rem',
+          fontSize: '16px',
           outline: 'none',
           backgroundColor: disabled ? '#f9fafb' : '#fff',
         }}
       />
-      {error && (
-        <p style={{ color: '#ef4444', fontSize: '0.875rem', marginTop: '0.25rem' }}>
-          {error}
-        </p>
-      )}
+      {error && <p style={{ color: '#ef4444', fontSize: '0.875rem', marginTop: '0.25rem' }}>{error}</p>}
     </div>
   );
 }
@@ -177,10 +152,39 @@ export function LinkButton({ children, href, style }: LinkButtonProps) {
         color: '#fff',
         textDecoration: 'none',
         fontWeight: '500',
+        minHeight: '44px',
         ...style,
       }}
     >
       {children}
+    </a>
+  );
+}
+
+interface GameCardProps {
+  href: string;
+  name: string;
+  desc: string;
+  color: string;
+}
+
+export function GameCard({ href, name, desc, color }: GameCardProps) {
+  return (
+    <a
+      href={href}
+      style={{
+        display: 'block',
+        padding: '1.5rem',
+        borderRadius: '12px',
+        border: '1px solid #e5e7eb',
+        textDecoration: 'none',
+        color: '#1f2937',
+        transition: 'transform 0.2s, box-shadow 0.2s',
+      }}
+    >
+      <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: color, marginBottom: '0.75rem' }} />
+      <div style={{ fontWeight: '600', fontSize: '1.125rem' }}>{name}</div>
+      <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>{desc}</div>
     </a>
   );
 }

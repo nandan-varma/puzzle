@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Button, Container } from '@/components/ui';
 
 export default function Speed() {
@@ -43,9 +44,7 @@ export default function Speed() {
   return (
     <Container>
       <h1 style={{ marginBottom: '0.25rem' }}>Whack-a-Mole</h1>
-      <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>
-        Click the green targets!
-      </p>
+      <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>Click the green targets!</p>
 
       <p style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>
         Score: <strong>{score}</strong>
@@ -63,9 +62,11 @@ export default function Speed() {
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '0.75rem',
-          marginBottom: '2rem',
+          gap: '0.5rem',
+          margin: '0 auto 2rem',
+          width: '100%',
           maxWidth: '300px',
+          aspectRatio: '1',
         }}
       >
         {Array.from({ length: 9 }).map((_, i) => (
@@ -85,9 +86,9 @@ export default function Speed() {
       <Button onClick={restart} variant={over ? 'primary' : 'secondary'}>
         {over ? 'Play Again' : 'Restart'}
       </Button>
-      <a href="/" style={{ marginLeft: '1rem', color: '#6b7280', textDecoration: 'none' }}>
+      <Link href="/" style={{ marginLeft: '1rem', color: '#6b7280', textDecoration: 'none' }}>
         Back to Home
-      </a>
+      </Link>
     </Container>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Button, Container } from '@/components/ui';
 
 type Pole = number[];
@@ -35,18 +36,16 @@ export default function Logical() {
   return (
     <Container>
       <h1 style={{ marginBottom: '0.25rem' }}>Tower of Hanoi</h1>
-      <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>
-        Move all disks to the right pole
-      </p>
+      <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>Move all disks to the right pole</p>
 
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 'clamp(1rem, 5vw, 2rem)', marginBottom: '2rem' }}>
         {poles.map((p, i) => (
           <div
             key={i}
             onClick={() => click(i)}
             style={{
-              width: '80px',
-              minHeight: '120px',
+              width: 'clamp(60px, 20vw, 80px)',
+              minHeight: 'clamp(80px, 25vw, 120px)',
               border: '2px solid #8b5cf6',
               borderRadius: '8px',
               display: 'flex',
@@ -60,11 +59,12 @@ export default function Logical() {
               <div
                 key={j}
                 style={{
-                  height: '20px',
+                  height: 'clamp(12px, 3vw, 20px)',
                   backgroundColor: '#8b5cf6',
                   borderRadius: '4px',
                   margin: '2px auto',
-                  width: `${v * 20}px`,
+                  width: `${v * 20}%`,
+                  minWidth: '20px',
                 }}
               />
             ))}
@@ -75,9 +75,9 @@ export default function Logical() {
       <Button onClick={reset} variant="secondary" style={{ marginRight: '1rem' }}>
         Reset
       </Button>
-      <a href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>
+      <Link href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>
         Back to Home
-      </a>
+      </Link>
     </Container>
   );
 }

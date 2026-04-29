@@ -1,10 +1,11 @@
 'use client';
 
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { auth } from '@/lib/firebase';
-import { Button, Card, Container } from '@/components/ui';
+import { Button, Card, Container, GameCard } from '@/components/ui';
 
 interface User {
   uid: string;
@@ -49,9 +50,7 @@ export default function Home() {
   return (
     <Container>
       <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Brain Games</h1>
-      <p style={{ color: '#6b7280', marginBottom: '2rem' }}>
-        Challenge your mind with fun puzzles
-      </p>
+      <p style={{ color: '#6b7280', marginBottom: '2rem' }}>Challenge your mind with fun puzzles</p>
 
       {user ? (
         <Card style={{ marginBottom: '2rem', backgroundColor: '#f0f9ff' }}>
@@ -65,35 +64,13 @@ export default function Home() {
       ) : (
         <Card style={{ marginBottom: '2rem' }}>
           <p style={{ marginBottom: '1rem' }}>Sign in to track your progress</p>
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <a
-              href="/login"
-              style={{
-                flex: 1,
-                padding: '0.75rem',
-                borderRadius: '8px',
-                backgroundColor: '#3b82f6',
-                color: '#fff',
-                textDecoration: 'none',
-                textAlign: 'center',
-              }}
-            >
-              Sign In
-            </a>
-            <a
-              href="/signup"
-              style={{
-                flex: 1,
-                padding: '0.75rem',
-                borderRadius: '8px',
-                border: '1px solid #3b82f6',
-                color: '#3b82f6',
-                textAlign: 'center',
-                textDecoration: 'none',
-              }}
-            >
-              Sign Up
-            </a>
+          <div style={{ display: 'flex', gap: '0.75rem' }}>
+            <Link href="/login" style={{ flex: 1, textAlign: 'center' }}>
+              <Button>Sign In</Button>
+            </Link>
+            <Link href="/signup" style={{ flex: 1, textAlign: 'center' }}>
+              <Button variant="outline">Sign Up</Button>
+            </Link>
           </div>
         </Card>
       )}
@@ -103,38 +80,12 @@ export default function Home() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
           gap: '1rem',
         }}
       >
         {games.map((game) => (
-          <a
-            key={game.href}
-            href={game.href}
-            style={{
-              display: 'block',
-              padding: '1.5rem',
-              borderRadius: '12px',
-              border: '1px solid #e5e7eb',
-              textDecoration: 'none',
-              color: '#1f2937',
-              transition: 'transform 0.2s, box-shadow 0.2s',
-            }}
-          >
-            <div
-              style={{
-                width: '8px',
-                height: '8px',
-                borderRadius: '50%',
-                backgroundColor: game.color,
-                marginBottom: '0.75rem',
-              }}
-            />
-            <div style={{ fontWeight: '600', fontSize: '1.125rem' }}>
-              {game.name}
-            </div>
-            <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>{game.desc}</div>
-          </a>
+          <GameCard key={game.href} {...game} />
         ))}
       </div>
     </Container>

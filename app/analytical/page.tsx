@@ -1,8 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Container } from '@/components/ui';
 
 const grid = [
   ['C', 'R', 'O', 'W', 'N', 'S', 'A', 'R', 'M', 'O'],
@@ -22,9 +22,16 @@ const words = ['CASTLE', 'KNIGHT', 'CROWN', 'ROYALTY', 'ARCHERY', 'GUARDS', 'MOA
 type Pos = [number, number];
 
 export default function Analytical() {
-  const router = useRouter();
   const [selected, setSelected] = useState<Pos[]>([]);
   const [found, setFound] = useState<string[]>([]);
+  const [windowWidth, setWindowWidth] = useState(0);
+
+  useEffect(() => {
+    const update = () => setWindowWidth(window.innerWidth);
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
   const handleDown = (r: number, c: number) => setSelected([[r, c]]);
   const handleEnter = (r: number, c: number) => {
@@ -39,16 +46,25 @@ export default function Analytical() {
     setSelected([]);
   };
 
-  useEffect(() => {
-    if (found.length === 5) router.push('/memory');
-  }, [found, router]);
+  const isMobile = windowWidth < 500;
+  const isSmall = windowWidth < 360;
+  const cellSize = isSmall ? 24 : isMobile ? 28 : 32;
 
   return (
-    <div style={{ maxWidth: '500px', margin: '0 auto', padding: '2rem' }}>
-      <h1>Word Search</h1>
-      <p style={{ marginBottom: '1rem', color: '#666' }}>Drag to select hidden words</p>
+    <Container>
+      <h1 style={{ marginBottom: '0.25rem' }}>Word Search</h1>
+      <p style={{ color: '#6b7280', marginBottom: '1rem' }}>Drag to select hidden words</p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '2px', marginBottom: '1rem' }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(10, 1fr)',
+          gap: '1px',
+          marginBottom: '1rem',
+          maxWidth: `${cellSize * 10 + 9}px`,
+          fontSize: isSmall ? '0.625rem' : '0.75rem',
+        }}
+      >
         {grid.map((row, r) =>
           row.map((letter, c) => {
             const isSelected = selected.some(([sr, sc]) => sr === r && sc === c);
@@ -59,8 +75,8 @@ export default function Analytical() {
                 onMouseEnter={() => handleEnter(r, c)}
                 onMouseUp={handleUp}
                 style={{
-                  width: '28px',
-                  height: '28px',
+                  width: cellSize,
+                  height: cellSize,
                   backgroundColor: isSelected ? '#3498db' : '#fff',
                   color: isSelected ? '#fff' : '#333',
                   display: 'flex',
@@ -68,7 +84,6 @@ export default function Analytical() {
                   justifyContent: 'center',
                   border: '1px solid #ddd',
                   cursor: 'pointer',
-                  fontSize: '0.75rem',
                 }}
               >
                 {letter}
@@ -78,11 +93,13 @@ export default function Analytical() {
         )}
       </div>
 
-      <p>Found: {found.join(', ') || 'None yet'}</p>
+      <p style={{ marginBottom: '1rem' }}>
+        Found: {found.join(', ') || 'None yet'}
+      </p>
 
-      <Link href="/" style={{ padding: '0.5rem 1rem', display: 'inline-block' }}>
+      <Link href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>
         Back to Home
       </Link>
-    </div>
+    </Container>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Button, Container } from '@/components/ui';
 
 function shuffle<T>(arr: T[]): T[] {
@@ -56,9 +57,7 @@ export default function Memory() {
     if (!currentCard || currentCard.flipped) return;
     if (!start) setStart(Date.now());
 
-    const next = cards.map((c, idx) =>
-      idx === i ? { ...c, flipped: true } : c
-    );
+    const next = cards.map((c, idx) => (idx === i ? { ...c, flipped: true } : c));
     setCards(next);
 
     const nextFlipped = [...flipped, i];
@@ -73,9 +72,7 @@ export default function Memory() {
         setFlipped([]);
       } else {
         setTimeout(() => {
-          const reset = cards.map((c, idx) =>
-            idx === a || idx === b ? { ...c, flipped: false } : c
-          );
+          const reset = cards.map((c, idx) => (idx === a || idx === b ? { ...c, flipped: false } : c));
           setCards(reset);
           setFlipped([]);
         }, 800);
@@ -94,9 +91,7 @@ export default function Memory() {
   return (
     <Container>
       <h1 style={{ marginBottom: '0.25rem' }}>Memory</h1>
-      <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>
-        Find all matching pairs
-      </p>
+      <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>Find all matching pairs</p>
 
       <p style={{ marginBottom: '1rem', fontSize: '1.25rem' }}>
         Time: <strong>{time.toFixed(1)}s</strong>
@@ -106,8 +101,11 @@ export default function Memory() {
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '0.75rem',
-          marginBottom: '2rem',
+          gap: '0.5rem',
+          margin: '0 auto 2rem',
+          width: '100%',
+          maxWidth: '400px',
+          aspectRatio: '1',
         }}
       >
         {cards.map((card, i) => (
@@ -121,7 +119,7 @@ export default function Memory() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '1.5rem',
+              fontSize: 'clamp(1rem, 5vw, 1.5rem)',
               fontWeight: 'bold',
               borderRadius: '12px',
               cursor: card.flipped ? 'default' : 'pointer',
@@ -135,9 +133,9 @@ export default function Memory() {
       <Button onClick={reset} variant="secondary" style={{ marginRight: '1rem' }}>
         Reset
       </Button>
-      <a href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>
+      <Link href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>
         Back to Home
-      </a>
+      </Link>
     </Container>
   );
 }
