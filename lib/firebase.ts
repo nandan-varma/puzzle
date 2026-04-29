@@ -1,6 +1,6 @@
-import { type FirebaseApp, initializeApp } from 'firebase/app';
-import { Auth, getAuth } from 'firebase/auth';
-import { Database, getDatabase } from 'firebase/database';
+import { initializeApp, type FirebaseApp } from 'firebase/app';
+import { getAuth, type Auth } from 'firebase/auth';
+import { getDatabase, type Database } from 'firebase/database';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -13,14 +13,9 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type FirebaseAuth = any;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type FirebaseDb = any;
-
 const app: FirebaseApp = initializeApp(firebaseConfig);
-const auth: FirebaseAuth = getAuth(app);
-const db: FirebaseDb = getDatabase(app);
+const auth: Auth = getAuth(app);
+const db: Database = getDatabase(app);
 
 export { auth, db };
-export type { FirebaseAuth, FirebaseDb };
+export type { Auth, Database };
