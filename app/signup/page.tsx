@@ -1,10 +1,10 @@
 'use client';
 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { auth } from '@/lib/firebase';
+import { Button, Container, Input } from '@/components/ui';
 
 export default function Signup() {
   const router = useRouter();
@@ -15,9 +15,18 @@ export default function Signup() {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) { setError('Email is required'); return; }
-    if (!password.trim()) { setError('Password is required'); return; }
-    if (password.length < 6) { setError('Password must be at least 6 characters'); return; }
+    if (!email.trim()) {
+      setError('Email is required');
+      return;
+    }
+    if (!password.trim()) {
+      setError('Password is required');
+      return;
+    }
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
 
     setIsLoading(true);
     setError(null);
@@ -32,45 +41,53 @@ export default function Signup() {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '2rem' }}>
-      <h1>Sign Up</h1>
+    <Container>
+      <h1 style={{ marginBottom: '0.5rem' }}>Create Account</h1>
+      <p style={{ color: '#6b7280', marginBottom: '2rem' }}>
+        Sign up to start playing
+      </p>
 
-      <form onSubmit={handleSignup} style={{ marginBottom: '1rem' }}>
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="email" style={{ display: 'block', marginBottom: '0.25rem' }}>Email</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={isLoading}
-            style={{ width: '100%', padding: '0.5rem' }}
-          />
-        </div>
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="password" style={{ display: 'block', marginBottom: '0.25rem' }}>Password</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={isLoading}
-            style={{ width: '100%', padding: '0.5rem' }}
-          />
-        </div>
-        <button type="submit" disabled={isLoading} style={{ width: '100%', padding: '0.75rem' }}>
-          {isLoading ? 'Creating account...' : 'Sign Up'}
-        </button>
+      <form onSubmit={handleSignup}>
+        <Input
+          label="Email"
+          id="email"
+          type="email"
+          value={email}
+          onChange={setEmail}
+          disabled={isLoading}
+          placeholder="you@example.com"
+        />
+        <Input
+          label="Password"
+          id="password"
+          type="password"
+          value={password}
+          onChange={setPassword}
+          disabled={isLoading}
+          placeholder="At least 6 characters"
+        />
+
+        {error && (
+          <p style={{ color: '#ef4444', marginBottom: '1rem' }}>{error}</p>
+        )}
+
+        <Button type="submit" disabled={isLoading} style={{ width: '100%' }}>
+          {isLoading ? 'Creating account...' : 'Create Account'}
+        </Button>
       </form>
 
-      {error && <p style={{ color: 'red', marginBottom: '1rem' }}>{error}</p>}
+      <p style={{ marginTop: '1.5rem', textAlign: 'center', color: '#6b7280' }}>
+        Already have an account?{' '}
+        <a href="/login" style={{ color: '#3b82f6', textDecoration: 'none' }}>
+          Sign in
+        </a>
+      </p>
 
-      <p>
-        Have an account? <Link href="/login">Log in</Link>
+      <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+        <a href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>
+          Back to Home
+        </a>
       </p>
-      <p style={{ marginTop: '1rem' }}>
-        <Link href="/">Back to Home</Link>
-      </p>
-    </div>
+    </Container>
   );
 }

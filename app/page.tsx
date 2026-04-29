@@ -1,10 +1,10 @@
 'use client';
 
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { auth } from '@/lib/firebase';
+import { Button, Card, Container } from '@/components/ui';
 
 interface User {
   uid: string;
@@ -12,12 +12,12 @@ interface User {
 }
 
 const games = [
-  { href: '/memory', name: 'Memory', desc: 'Find matching pairs' },
-  { href: '/speed', name: 'Whack-a-Mole', desc: 'Hit the targets' },
-  { href: '/analytical', name: 'Word Search', desc: 'Find hidden words' },
-  { href: '/logical', name: 'Tower of Hanoi', desc: 'Solve the puzzle' },
-  { href: '/pingpong', name: 'Ping Pong', desc: 'Classic paddle game' },
-  { href: '/story', name: 'Story', desc: 'Mystery adventure' },
+  { href: '/memory', name: 'Memory', desc: 'Find matching pairs', color: '#10b981' },
+  { href: '/speed', name: 'Whack-a-Mole', desc: 'Hit the targets', color: '#f59e0b' },
+  { href: '/analytical', name: 'Word Search', desc: 'Find hidden words', color: '#3b82f6' },
+  { href: '/logical', name: 'Tower of Hanoi', desc: 'Solve the puzzle', color: '#8b5cf6' },
+  { href: '/pingpong', name: 'Ping Pong', desc: 'Classic paddle', color: '#ec4899' },
+  { href: '/story', name: 'Story', desc: 'Mystery adventure', color: '#ef4444' },
 ];
 
 export default function Home() {
@@ -27,11 +27,7 @@ export default function Home() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser({ uid: currentUser.uid, email: currentUser.email });
-      } else {
-        setUser(null);
-      }
+      setUser(currentUser ? { uid: currentUser.uid, email: currentUser.email } : null);
       setIsLoading(false);
     });
     return () => unsubscribe();
@@ -43,60 +39,104 @@ export default function Home() {
   };
 
   if (isLoading) {
-    return <div style={{ padding: '2rem' }}>Loading...</div>;
+    return (
+      <Container>
+        <p>Loading...</p>
+      </Container>
+    );
   }
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '2rem' }}>
-      <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Puzzle Game</h1>
+    <Container>
+      <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Brain Games</h1>
+      <p style={{ color: '#6b7280', marginBottom: '2rem' }}>
+        Challenge your mind with fun puzzles
+      </p>
 
       {user ? (
-        <div style={{ marginBottom: '2rem' }}>
-          <p>Welcome, {user.email}</p>
-          <button
-            type="button"
-            onClick={handleSignOut}
-            style={{ marginTop: '0.5rem', padding: '0.5rem 1rem' }}
-          >
+        <Card style={{ marginBottom: '2rem', backgroundColor: '#f0f9ff' }}>
+          <p style={{ marginBottom: '0.5rem' }}>
+            Welcome back, <strong>{user.email}</strong>
+          </p>
+          <Button onClick={handleSignOut} variant="secondary">
             Sign Out
-          </button>
-        </div>
+          </Button>
+        </Card>
       ) : (
-        <div style={{ marginBottom: '2rem' }}>
-          <Link href="/login">
-            <button type="button" style={{ marginRight: '0.5rem', padding: '0.5rem 1rem' }}>
-              Log In
-            </button>
-          </Link>
-          <Link href="/signup">
-            <button type="button" style={{ padding: '0.5rem 1rem' }}>
+        <Card style={{ marginBottom: '2rem' }}>
+          <p style={{ marginBottom: '1rem' }}>Sign in to track your progress</p>
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <a
+              href="/login"
+              style={{
+                flex: 1,
+                padding: '0.75rem',
+                borderRadius: '8px',
+                backgroundColor: '#3b82f6',
+                color: '#fff',
+                textDecoration: 'none',
+                textAlign: 'center',
+              }}
+            >
+              Sign In
+            </a>
+            <a
+              href="/signup"
+              style={{
+                flex: 1,
+                padding: '0.75rem',
+                borderRadius: '8px',
+                border: '1px solid #3b82f6',
+                color: '#3b82f6',
+                textAlign: 'center',
+                textDecoration: 'none',
+              }}
+            >
               Sign Up
-            </button>
-          </Link>
-        </div>
+            </a>
+          </div>
+        </Card>
       )}
 
       <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Choose a Game</h2>
 
-      <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '1rem',
+        }}
+      >
         {games.map((game) => (
-          <Link
+          <a
             key={game.href}
             href={game.href}
             style={{
               display: 'block',
               padding: '1.5rem',
-              border: '1px solid #ccc',
-              borderRadius: '8px',
+              borderRadius: '12px',
+              border: '1px solid #e5e7eb',
               textDecoration: 'none',
-              color: '#333',
+              color: '#1f2937',
+              transition: 'transform 0.2s, box-shadow 0.2s',
             }}
           >
-            <div style={{ fontWeight: 'bold' }}>{game.name}</div>
-            <div style={{ fontSize: '0.875rem', color: '#666' }}>{game.desc}</div>
-          </Link>
+            <div
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: game.color,
+                marginBottom: '0.75rem',
+              }}
+            />
+            <div style={{ fontWeight: '600', fontSize: '1.125rem' }}>
+              {game.name}
+            </div>
+            <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>{game.desc}</div>
+          </a>
         ))}
       </div>
-    </div>
+    </Container>
   );
 }

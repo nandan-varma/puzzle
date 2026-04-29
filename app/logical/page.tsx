@@ -1,69 +1,70 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
+import { Button, Container } from '@/components/ui';
 
 type Pole = number[];
 
 export default function Logical() {
-  const [blobs, setBlobs] = useState<Pole[]>([[3, 2, 1], [], []]);
-  const [selectedBlob, setSelectedBlob] = useState<number | null>(null);
+  const [poles, setPoles] = useState<Pole[]>([[3, 2, 1], [], []]);
+  const [selected, setSelected] = useState<number | null>(null);
 
-  const handlePoleClick = (poleIndex: number) => {
-    const newBlobs = [...blobs];
-    const pole = newBlobs[poleIndex];
-    if (pole === undefined) return;
+  const click = (i: number) => {
+    const next = [...poles];
+    const p = next[i];
+    if (!p || p.length === 0) return;
 
-    if (selectedBlob === null) {
-      const topBlob = pole.pop();
-      setSelectedBlob(topBlob ?? null);
+    if (selected === null) {
+      const pop = p.pop();
+      setSelected(pop ?? null);
     } else {
-      const topBlob = pole[pole.length - 1];
-      if (topBlob === undefined || selectedBlob < topBlob) {
-        pole.push(selectedBlob);
-        setSelectedBlob(null);
+      const top = p[p.length - 1];
+      if (!top || selected < top) {
+        p.push(selected);
+        setSelected(null);
       }
     }
-    setBlobs([...newBlobs]);
+    setPoles([...next]);
   };
 
   const reset = () => {
-    setBlobs([[3, 2, 1], [], []]);
-    setSelectedBlob(null);
+    setPoles([[3, 2, 1], [], []]);
+    setSelected(null);
   };
 
   return (
-    <div style={{ maxWidth: '500px', margin: '0 auto', padding: '2rem' }}>
-      <h1>Tower of Hanoi</h1>
-      <p style={{ marginBottom: '1rem', color: '#666' }}>Move all disks to the right pole</p>
+    <Container>
+      <h1 style={{ marginBottom: '0.25rem' }}>Tower of Hanoi</h1>
+      <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>
+        Move all disks to the right pole
+      </p>
 
       <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '2rem' }}>
-        {blobs.map((poleBlobs, poleIndex) => (
+        {poles.map((p, i) => (
           <div
-            key={poleIndex}
-            onClick={() => handlePoleClick(poleIndex)}
+            key={i}
+            onClick={() => click(i)}
             style={{
               width: '80px',
               minHeight: '120px',
-              border: '2px solid #9b59b6',
-              borderRadius: '4px',
+              border: '2px solid #8b5cf6',
+              borderRadius: '8px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'flex-end',
-              padding: '0.25rem',
+              padding: '0.5rem',
               cursor: 'pointer',
             }}
           >
-            {poleBlobs.map((blobSize, i) => (
+            {p.map((v, j) => (
               <div
-                key={i}
+                key={j}
                 style={{
                   height: '20px',
-                  backgroundColor: '#e74c3c',
-                  borderRadius: '2px',
-                  margin: '2px 0',
-                  width: `${blobSize * 20}px`,
-                  alignSelf: 'center',
+                  backgroundColor: '#8b5cf6',
+                  borderRadius: '4px',
+                  margin: '2px auto',
+                  width: `${v * 20}px`,
                 }}
               />
             ))}
@@ -71,10 +72,12 @@ export default function Logical() {
         ))}
       </div>
 
-      <button onClick={reset} style={{ marginRight: '1rem', padding: '0.5rem 1rem' }}>
+      <Button onClick={reset} variant="secondary" style={{ marginRight: '1rem' }}>
         Reset
-      </button>
-      <Link href="/">Back to Home</Link>
-    </div>
+      </Button>
+      <a href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>
+        Back to Home
+      </a>
+    </Container>
   );
 }

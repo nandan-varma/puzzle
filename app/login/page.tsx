@@ -1,10 +1,10 @@
 'use client';
 
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { auth } from '@/lib/firebase';
+import { Button, Container, Input } from '@/components/ui';
 
 export default function Login() {
   const router = useRouter();
@@ -15,8 +15,14 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) { setError('Email is required'); return; }
-    if (!password.trim()) { setError('Password is required'); return; }
+    if (!email.trim()) {
+      setError('Email is required');
+      return;
+    }
+    if (!password.trim()) {
+      setError('Password is required');
+      return;
+    }
 
     setIsLoading(true);
     setError(null);
@@ -31,45 +37,53 @@ export default function Login() {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '2rem' }}>
-      <h1>Login</h1>
+    <Container>
+      <h1 style={{ marginBottom: '0.5rem' }}>Welcome Back</h1>
+      <p style={{ color: '#6b7280', marginBottom: '2rem' }}>
+        Sign in to continue playing
+      </p>
 
-      <form onSubmit={handleLogin} style={{ marginBottom: '1rem' }}>
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="email" style={{ display: 'block', marginBottom: '0.25rem' }}>Email</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={isLoading}
-            style={{ width: '100%', padding: '0.5rem' }}
-          />
-        </div>
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="password" style={{ display: 'block', marginBottom: '0.25rem' }}>Password</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={isLoading}
-            style={{ width: '100%', padding: '0.5rem' }}
-          />
-        </div>
-        <button type="submit" disabled={isLoading} style={{ width: '100%', padding: '0.75rem' }}>
-          {isLoading ? 'Logging in...' : 'Login'}
-        </button>
+      <form onSubmit={handleLogin}>
+        <Input
+          label="Email"
+          id="email"
+          type="email"
+          value={email}
+          onChange={setEmail}
+          disabled={isLoading}
+          placeholder="you@example.com"
+        />
+        <Input
+          label="Password"
+          id="password"
+          type="password"
+          value={password}
+          onChange={setPassword}
+          disabled={isLoading}
+          placeholder="Enter your password"
+        />
+
+        {error && (
+          <p style={{ color: '#ef4444', marginBottom: '1rem' }}>{error}</p>
+        )}
+
+        <Button type="submit" disabled={isLoading} style={{ width: '100%' }}>
+          {isLoading ? 'Signing in...' : 'Sign In'}
+        </Button>
       </form>
 
-      {error && <p style={{ color: 'red', marginBottom: '1rem' }}>{error}</p>}
+      <p style={{ marginTop: '1.5rem', textAlign: 'center', color: '#6b7280' }}>
+        Don&apos;t have an account?{' '}
+        <a href="/signup" style={{ color: '#3b82f6', textDecoration: 'none' }}>
+          Sign up
+        </a>
+      </p>
 
-      <p>
-        No account? <Link href="/signup">Sign up</Link>
+      <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+        <a href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>
+          Back to Home
+        </a>
       </p>
-      <p style={{ marginTop: '1rem' }}>
-        <Link href="/">Back to Home</Link>
-      </p>
-    </div>
+    </Container>
   );
 }

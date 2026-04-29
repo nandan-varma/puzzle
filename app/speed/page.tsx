@@ -1,83 +1,93 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { Button, Container } from '@/components/ui';
 
 export default function Speed() {
   const [score, setScore] = useState(0);
-  const [current, setCurrent] = useState<number | null>(null);
-  const [gameOver, setGameOver] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(10);
-
-  const randomHoleRef = useRef(() => {
-    const hole = Math.floor(Math.random() * 9);
-    setCurrent(hole);
-  });
+  const [target, setTarget] = useState(0);
+  const [over, setOver] = useState(false);
+  const [time, setTime] = useState(10);
 
   useEffect(() => {
-    if (gameOver) return;
-    const timer = setInterval(() => randomHoleRef.current(), 800);
-    return () => clearInterval(timer);
-  }, [gameOver]);
+    const moveTarget = () => setTarget(Math.floor(Math.random() * 9));
+    if (over) return;
+    const id1 = setInterval(moveTarget, 800);
+    return () => clearInterval(id1);
+  }, [over]);
 
   useEffect(() => {
-    if (gameOver) return;
-    const timer = setInterval(() => setTimeLeft((p) => p - 1), 1000);
-    return () => clearInterval(timer);
-  }, [gameOver]);
+    if (over) return;
+    const id2 = setInterval(() => setTime((t) => t - 1), 1000);
+    return () => clearInterval(id2);
+  }, [over]);
 
   useEffect(() => {
-    if (timeLeft === 0) setGameOver(true);
-  }, [timeLeft]);
+    if (time <= 0) setOver(true);
+  }, [time]);
 
-  const hit = (id: number) => {
-    if (id === current) {
-      setScore((p) => p + 1);
-      setCurrent(null);
+  const hit = (i: number) => {
+    if (i === target) {
+      setScore((s) => s + 1);
+      setTarget(-1);
     }
   };
 
-  const replay = () => {
+  const restart = () => {
     setScore(0);
-    setTimeLeft(10);
-    setGameOver(false);
+    setTime(10);
+    setOver(false);
+    setTarget(Math.floor(Math.random() * 9));
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '2rem' }}>
-      <h1>Whack-a-Mole</h1>
-      <p style={{ color: '#666', marginBottom: '1rem' }}>Click the green targets!</p>
+    <Container>
+      <h1 style={{ marginBottom: '0.25rem' }}>Whack-a-Mole</h1>
+      <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>
+        Click the green targets!
+      </p>
 
-      <div style={{ marginBottom: '1rem' }}>
-        Score: <strong>{score}</strong> | Time: <strong>{timeLeft}s</strong>
-      </div>
+      <p style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>
+        Score: <strong>{score}</strong>
+        <span style={{ margin: '0 1rem' }}>|</span>
+        Time: <strong>{time}s</strong>
+      </p>
 
-      {gameOver && (
-        <div style={{ marginBottom: '1rem', fontSize: '1.25rem' }}>
+      {over && (
+        <p style={{ marginBottom: '1rem', fontSize: '1.25rem', color: '#10b981' }}>
           Game Over! Final Score: {score}
-        </div>
+        </p>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', marginBottom: '2rem' }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '0.75rem',
+          marginBottom: '2rem',
+          maxWidth: '300px',
+        }}
+      >
         {Array.from({ length: 9 }).map((_, i) => (
           <div
             key={i}
             onClick={() => hit(i)}
             style={{
               aspectRatio: '1',
-              backgroundColor: current === i ? '#27ae60' : '#ddd',
-              borderRadius: '4px',
+              backgroundColor: i === target ? '#10b981' : '#e5e7eb',
+              borderRadius: '12px',
               cursor: 'pointer',
             }}
           />
         ))}
       </div>
 
-      <button onClick={replay} style={{ marginRight: '1rem', padding: '0.5rem 1rem' }}>
-        {gameOver ? 'Play Again' : 'Restart'}
-      </button>
-
-      <Link href="/">Back to Home</Link>
-    </div>
+      <Button onClick={restart} variant={over ? 'primary' : 'secondary'}>
+        {over ? 'Play Again' : 'Restart'}
+      </Button>
+      <a href="/" style={{ marginLeft: '1rem', color: '#6b7280', textDecoration: 'none' }}>
+        Back to Home
+      </a>
+    </Container>
   );
 }
