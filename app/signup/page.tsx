@@ -11,17 +11,35 @@ export default function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignup = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    if (!email.trim()) {
+      setError('Email is required');
+      return;
+    }
+    if (!password.trim()) {
+      setError('Password is required');
+      return;
+    }
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
     try {
       await createUserWithEmailAndPassword(auth, email, password).then(() => {
-        router.push('/puzzle');
+        router.push('/');
       });
     } catch (err) {
       const errMessage = err instanceof Error ? err.message : 'Signup failed';
       setError(errMessage);
+      setIsLoading(false);
     }
   };
 
@@ -36,6 +54,8 @@ export default function Signup() {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={isLoading}
+            autoComplete="email"
           />
         </div>
         <div>
@@ -45,14 +65,19 @@ export default function Signup() {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            disabled={isLoading}
+            autoComplete="new-password"
           />
         </div>
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Creating account...' : 'Sign Up'}
+        </button>
       </form>
-      <Link role="button" className="fancy-button" href="/login">
-        <button type="button">Log In</button>
-      </Link>
+      <p>
+        Already have an account? <Link href="/login">Log in</Link>
+      </p>
       {error && <p>{error}</p>}
+      <Link href="/">Back to Home</Link>
     </div>
   );
 }

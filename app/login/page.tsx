@@ -11,17 +11,31 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    if (!email.trim()) {
+      setError('Email is required');
+      return;
+    }
+    if (!password.trim()) {
+      setError('Password is required');
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
     try {
       await signInWithEmailAndPassword(auth, email, password).then(() => {
-        router.push('/puzzle');
+        router.push('/');
       });
     } catch (err) {
       const errMessage = err instanceof Error ? err.message : 'Login failed';
       setError(errMessage);
+      setIsLoading(false);
     }
   };
 
@@ -36,6 +50,8 @@ export default function Login() {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={isLoading}
+            autoComplete="email"
           />
         </div>
         <div>
@@ -45,14 +61,19 @@ export default function Login() {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            disabled={isLoading}
+            autoComplete="current-password"
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Logging in...' : 'Login'}
+        </button>
       </form>
-      <Link role="button" className="fancy-button" href="/signup">
-        <button type="button">Sign Up</button>
-      </Link>
+      <p>
+        Don&apos;t have an account? <Link href="/signup">Sign up</Link>
+      </p>
       {error && <p>{error}</p>}
+      <Link href="/">Back to Home</Link>
     </div>
   );
 }
