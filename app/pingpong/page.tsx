@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function Pingpong() {
@@ -42,6 +43,8 @@ export default function Pingpong() {
 
   return (
     <div>
+      <h1>Ping Pong</h1>
+      <p>Left: W/S keys | Right: Arrow keys</p>
       <div
         style={{
           position: 'relative',
@@ -71,6 +74,7 @@ export default function Pingpong() {
           }}
         />
       </div>
+      <Link href="/">Back to Home</Link>
     </div>
   );
 }

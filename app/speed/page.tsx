@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Speed() {
@@ -55,13 +56,14 @@ export default function Speed() {
   return (
     <div>
       <h1>Whack-a-Mole</h1>
+      <p>Click the green square to score</p>
       <h2>Score: {score}</h2>
       <h2>Time Left: {timeLeft}</h2>
       {gameOver ? (
         <>
-          <h2>Game Over</h2>
+          <h2>Game Over! Final Score: {score}</h2>
           <button type="button" onClick={replay}>
-            Replay
+            Play Again
           </button>
         </>
       ) : null}
@@ -87,6 +89,7 @@ export default function Speed() {
           ))}
         </tbody>
       </table>
+      <Link href="/">Back to Home</Link>
     </div>
   );
 }

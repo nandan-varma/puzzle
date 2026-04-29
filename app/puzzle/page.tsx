@@ -11,6 +11,7 @@ interface UserProgress {
 
 export default function Puzzle() {
   const [progress, setProgress] = useState<UserProgress>({ level: 0 });
+  const [isLoading, setIsLoading] = useState(true);
 
   const getUserId = (): string | null => {
     const user = auth.currentUser;
@@ -20,43 +21,56 @@ export default function Puzzle() {
   const userId = getUserId();
 
   useEffect(() => {
-    if (userId) {
-      const progressRef = ref(db, `progress/${userId}`);
-      get(progressRef).then((snapshot) => {
-        setProgress(snapshot.val() || { level: 0 });
-      });
+    if (!userId) {
+      setIsLoading(false);
+      return;
     }
+
+    const progressRef = ref(db, `progress/${userId}`);
+    get(progressRef).then((snapshot) => {
+      setProgress(snapshot.val() || { level: 0 });
+      setIsLoading(false);
+    });
   }, [userId]);
+
+  if (isLoading) {
+    return (
+      <div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   if (userId === null) {
     return (
-      <>
-        You need to login in order to play. <br></br>
-        <Link role="button" className="fancy-button" href="/login">
+      <div>
+        <h1>Please Login</h1>
+        <p>Login to track your progress</p>
+        <Link href="/login">
           <button type="button">Log In</button>
         </Link>
-        <br></br>or you can <br></br>
-        <Link role="button" className="fancy-button" href="/signup">
+        <br></br>
+        <Link href="/signup">
           <button type="button">Sign Up</button>
         </Link>
-      </>
+        <br></br>
+        <Link href="/">Browse Games (No Progress)</Link>
+      </div>
     );
   }
 
   return (
     <div>
-      <p> Redirecting you to next level</p>
+      <h1>Your Progress</h1>
+      <p>Current Level: {progress.level}</p>
+      <p>Keep playing games to level up!</p>
+      <Link href="/">
+        <button type="button">Play Games</button>
+      </Link>
       <br></br>
-      <p> If you are stuck in this page contact with this ID : {userId}</p>
-      <button
-        type="button"
-        onClick={() => {
-          setProgress({ level: progress.level + 1 });
-        }}
-      >
-        +++
-      </button>
-      <h1>Puzzle</h1>
+      <Link href="/logout">
+        <button type="button">Sign Out</button>
+      </Link>
     </div>
   );
 }

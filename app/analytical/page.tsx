@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -85,6 +86,8 @@ export default function Analytical() {
 
   return (
     <>
+      <h1>Word Search</h1>
+      <p>Drag to select hidden words</p>
       <table>
         <tbody>
           {Array.from({ length: 10 }).map((_, row) => (
@@ -95,6 +98,7 @@ export default function Analytical() {
         </tbody>
       </table>
       <div>Found words: {foundWords.join(', ')}</div>
+      <Link href="/">Back to Home</Link>
     </>
   );
 }

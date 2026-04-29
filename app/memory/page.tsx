@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 interface Card {
   value: string;
@@ -103,8 +104,20 @@ export default function Memory() {
     }
   };
 
+  const reset = () => {
+    const cardValues = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    const doubledCardValues = [...cardValues, ...cardValues];
+    const shuffledCardValues = shuffle(doubledCardValues);
+    setCards(shuffledCardValues.map((value) => ({ value, flipped: false })));
+    setStartTime(null);
+    setElapsedTime(0);
+    setFlippedCards([]);
+  };
+
   return (
     <div className="game-container">
+      <h1>Memory</h1>
+      <p>Find all matching pairs</p>
       <div>Time: {elapsedTime.toFixed(1)}s</div>
       <div className="game-board">
         {cards.map((card, index) => (
@@ -120,6 +133,10 @@ export default function Memory() {
           </div>
         ))}
       </div>
+      <button type="button" onClick={reset}>
+        Reset
+      </button>
+      <Link href="/">Back to Home</Link>
     </div>
   );
 }
