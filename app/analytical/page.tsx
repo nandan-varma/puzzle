@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { Container } from '@/components/ui';
+import { Container, Button } from '@/components/ui';
 
 const grid = [
   ['C', 'R', 'O', 'W', 'N', 'S', 'A', 'R', 'M', 'O'],
@@ -19,41 +19,43 @@ const grid = [
 
 const words = ['CASTLE', 'KNIGHT', 'CROWN', 'ROYALTY', 'ARCHERY', 'GUARDS', 'MOAT', 'MONARCHY', 'THRONE'];
 
-type Pos = [number, number];
-
 export default function Analytical() {
-  const [selected, setSelected] = useState<Pos[]>([]);
+  const [selected, setSelected] = useState<[number, number][]>([]);
   const [found, setFound] = useState<string[]>([]);
-  const [windowWidth, setWindowWidth] = useState(0);
+  const [isSelecting, setIsSelecting] = useState(false);
 
-  useEffect(() => {
-    const update = () => setWindowWidth(window.innerWidth);
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, []);
-
-  const handleDown = (r: number, c: number) => setSelected([[r, c]]);
-  const handleEnter = (r: number, c: number) => {
-    if (selected.length > 0) setSelected([...selected, [r, c]]);
+  const handleStart = (r: number, c: number) => {
+    setSelected([[r, c]]);
+    setIsSelecting(true);
   };
-  const handleUp = () => {
+
+  const handleMove = (r: number, c: number) => {
+    if (!isSelecting) return;
+    const last = selected[selected.length - 1];
+    if (!last) return;
+    const [lr, lc] = last;
+    const isAdjacent = Math.abs(r - lr) <= 1 && Math.abs(c - lc) <= 1;
+    if (isAdjacent && !selected.some(([sr, sc]) => sr === r && sc === c)) {
+      setSelected([...selected, [r, c]]);
+    }
+  };
+
+  const handleEnd = () => {
     if (selected.length === 0) return;
     const word = selected.map(([r, c]) => grid[r]?.[c] ?? '').join('');
     if (words.includes(word) && !found.includes(word)) {
       setFound([...found, word]);
     }
     setSelected([]);
+    setIsSelecting(false);
   };
-
-  const isMobile = windowWidth < 500;
-  const isSmall = windowWidth < 360;
-  const cellSize = isSmall ? 24 : isMobile ? 28 : 32;
 
   return (
     <Container>
       <h1 style={{ marginBottom: '0.25rem' }}>Word Search</h1>
-      <p style={{ color: '#6b7280', marginBottom: '1rem' }}>Drag to select hidden words</p>
+      <p style={{ color: '#6b7280', marginBottom: '1rem' }}>
+        Drag to select hidden words
+      </p>
 
       <div
         style={{
@@ -61,8 +63,8 @@ export default function Analytical() {
           gridTemplateColumns: 'repeat(10, 1fr)',
           gap: '1px',
           marginBottom: '1rem',
-          maxWidth: `${cellSize * 10 + 9}px`,
-          fontSize: isSmall ? '0.625rem' : '0.75rem',
+          maxWidth: '350px',
+          userSelect: 'none',
         }}
       >
         {grid.map((row, r) =>
@@ -71,12 +73,12 @@ export default function Analytical() {
             return (
               <div
                 key={`${r}-${c}`}
-                onMouseDown={() => handleDown(r, c)}
-                onMouseEnter={() => handleEnter(r, c)}
-                onMouseUp={handleUp}
+                onMouseDown={() => handleStart(r, c)}
+                onMouseEnter={() => handleMove(r, c)}
+                onMouseUp={handleEnd}
+                onMouseLeave={handleEnd}
                 style={{
-                  width: cellSize,
-                  height: cellSize,
+                  aspectRatio: '1',
                   backgroundColor: isSelected ? '#3498db' : '#fff',
                   color: isSelected ? '#fff' : '#333',
                   display: 'flex',
@@ -84,6 +86,8 @@ export default function Analytical() {
                   justifyContent: 'center',
                   border: '1px solid #ddd',
                   cursor: 'pointer',
+                  fontSize: 'clamp(0.625rem, 3vw, 0.875rem)',
+                  fontWeight: 'bold',
                 }}
               >
                 {letter}
@@ -93,9 +97,26 @@ export default function Analytical() {
         )}
       </div>
 
-      <p style={{ marginBottom: '1rem' }}>
-        Found: {found.join(', ') || 'None yet'}
+      <p style={{ marginBottom: '1rem', fontSize: '1rem' }}>
+        Found ({found.length}/5): {found.join(', ') || 'None yet'}
       </p>
+
+      {found.length === 5 && (
+        <p style={{ color: '#10b981', fontWeight: 'bold', marginBottom: '1rem' }}>
+          🎉 All words found! Great job!
+        </p>
+      )}
+
+      <Button
+        onClick={() => {
+          setFound([]);
+          setSelected([]);
+        }}
+        variant="secondary"
+        style={{ marginRight: '0.5rem' }}
+      >
+        Reset
+      </Button>
 
       <Link href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>
         Back to Home
