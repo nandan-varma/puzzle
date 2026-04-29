@@ -40,3 +40,14 @@ jspm_packages
 # Environment variables
 .env.local
 .env*.local
+
+# TypeScript build cache
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# pnpm debug log
+pnpm-debug.log
+
+# IDE
+.vscode/
+.idea/
