@@ -6,20 +6,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@tailwindcss/postcss": "^4.2.4",
     "autoprefixer": "10.5.0",
     "axios": "^1.15.2",
-    "eslint": "10.2.1",
-    "eslint-config-next": "16.2.4",
     "firebase": "^12.12.1",
     "next": "16.2.4",
     "postcss": "8.5.10",
     "react": "19.2.5",
     "react-dom": "19.2.5",
-    "tailwindcss": "^4.2.4"
+    "tailwindcss": "^4.2.4",
+    "typescript": "^5.7.3"
   },
   "devDependencies": {
     "baseline-browser-mapping": "^2.10.21"
