@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
-const castleWords = [
+const grid = [
   ['C', 'R', 'O', 'W', 'N', 'S', 'A', 'R', 'M', 'O'],
   ['H', 'R', 'O', 'Y', 'A', 'L', 'T', 'Y', 'T', 'R'],
   ['A', 'I', 'K', 'N', 'I', 'G', 'H', 'T', 'S', 'E'],
@@ -17,88 +17,72 @@ const castleWords = [
   ['S', 'T', 'H', 'R', 'O', 'N', 'E', 'P', 'S', 'A'],
 ];
 
-const validWords: string[] = [
-  'CASTLE',
-  'KNIGHT',
-  'CROWN',
-  'ROYALTY',
-  'ARCHERY',
-  'GUARDS',
-  'MOAT',
-  'MONARCHY',
-  'THRONE',
-];
+const words = ['CASTLE', 'KNIGHT', 'CROWN', 'ROYALTY', 'ARCHERY', 'GUARDS', 'MOAT', 'MONARCHY', 'THRONE'];
 
-type CellPosition = [number, number];
+type Pos = [number, number];
 
 export default function Analytical() {
   const router = useRouter();
-  const [selectedCells, setSelectedCells] = useState<CellPosition[]>([]);
-  const [foundWords, setFoundWords] = useState<string[]>([]);
+  const [selected, setSelected] = useState<Pos[]>([]);
+  const [found, setFound] = useState<string[]>([]);
 
-  const handleMouseDown = (row: number, col: number) => {
-    setSelectedCells([[row, col]]);
+  const handleDown = (r: number, c: number) => setSelected([[r, c]]);
+  const handleEnter = (r: number, c: number) => {
+    if (selected.length > 0) setSelected([...selected, [r, c]]);
   };
-
-  const handleMouseEnter = (row: number, col: number) => {
-    if (selectedCells.length > 0) {
-      setSelectedCells([...selectedCells, [row, col]]);
+  const handleUp = () => {
+    if (selected.length === 0) return;
+    const word = selected.map(([r, c]) => grid[r]?.[c] ?? '').join('');
+    if (words.includes(word) && !found.includes(word)) {
+      setFound([...found, word]);
     }
-  };
-
-  const handleMouseUp = () => {
-    if (selectedCells.length === 0) {
-      return;
-    }
-    const selectedWord = selectedCells
-      .map(([row, col]) => {
-        const rowData = castleWords[row];
-        return rowData?.[col] ?? '';
-      })
-      .join('');
-    if (validWords.includes(selectedWord)) {
-      setFoundWords([...foundWords, selectedWord]);
-    }
-    setSelectedCells([]);
+    setSelected([]);
   };
 
   useEffect(() => {
-    if (foundWords.length === 5) {
-      router.push('/memory');
-    }
-  }, [foundWords, router]);
-
-  const renderCell = (row: number, col: number) => {
-    const isSelected = selectedCells.some(([r, c]) => r === row && c === col);
-    const letter = castleWords[row]?.[col] ?? '';
-    return (
-      <td
-        key={`${row}+${col}`}
-        className={`cell ${isSelected ? 'selected' : ''}`}
-        onMouseDown={() => handleMouseDown(row, col)}
-        onMouseEnter={() => handleMouseEnter(row, col)}
-        onMouseUp={handleMouseUp}
-      >
-        {letter}
-      </td>
-    );
-  };
+    if (found.length === 5) router.push('/memory');
+  }, [found, router]);
 
   return (
-    <>
+    <div style={{ maxWidth: '500px', margin: '0 auto', padding: '2rem' }}>
       <h1>Word Search</h1>
-      <p>Drag to select hidden words</p>
-      <table>
-        <tbody>
-          {Array.from({ length: 10 }).map((_, row) => (
-            <tr key={row}>
-              {Array.from({ length: 10 }).map((_, col) => renderCell(row, col))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div>Found words: {foundWords.join(', ')}</div>
-      <Link href="/">Back to Home</Link>
-    </>
+      <p style={{ marginBottom: '1rem', color: '#666' }}>Drag to select hidden words</p>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '2px', marginBottom: '1rem' }}>
+        {grid.map((row, r) =>
+          row.map((letter, c) => {
+            const isSelected = selected.some(([sr, sc]) => sr === r && sc === c);
+            return (
+              <div
+                key={`${r}-${c}`}
+                onMouseDown={() => handleDown(r, c)}
+                onMouseEnter={() => handleEnter(r, c)}
+                onMouseUp={handleUp}
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  backgroundColor: isSelected ? '#3498db' : '#fff',
+                  color: isSelected ? '#fff' : '#333',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: '1px solid #ddd',
+                  cursor: 'pointer',
+                  fontSize: '0.75rem',
+                }}
+              >
+                {letter}
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      <p>Found: {found.join(', ') || 'None yet'}</p>
+
+      <Link href="/" style={{ padding: '0.5rem 1rem', display: 'inline-block' }}>
+        Back to Home
+      </Link>
+    </div>
   );
 }

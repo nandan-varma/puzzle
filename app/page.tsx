@@ -11,6 +11,15 @@ interface User {
   email: string | null;
 }
 
+const games = [
+  { href: '/memory', name: 'Memory', desc: 'Find matching pairs' },
+  { href: '/speed', name: 'Whack-a-Mole', desc: 'Hit the targets' },
+  { href: '/analytical', name: 'Word Search', desc: 'Find hidden words' },
+  { href: '/logical', name: 'Tower of Hanoi', desc: 'Solve the puzzle' },
+  { href: '/pingpong', name: 'Ping Pong', desc: 'Classic paddle game' },
+  { href: '/story', name: 'Story', desc: 'Mystery adventure' },
+];
+
 export default function Home() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
@@ -19,16 +28,12 @@ export default function Home() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        setUser({
-          uid: currentUser.uid,
-          email: currentUser.email,
-        });
+        setUser({ uid: currentUser.uid, email: currentUser.email });
       } else {
         setUser(null);
       }
       setIsLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -38,50 +43,60 @@ export default function Home() {
   };
 
   if (isLoading) {
-    return (
-      <div>
-        <p>Loading...</p>
-      </div>
-    );
+    return <div style={{ padding: '2rem' }}>Loading...</div>;
   }
 
   return (
-    <main>
+    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '2rem' }}>
+      <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Puzzle Game</h1>
+
       {user ? (
-        <>
-          <p>Welcome! {user.email}</p>
-          <button type="button" onClick={handleSignOut}>
+        <div style={{ marginBottom: '2rem' }}>
+          <p>Welcome, {user.email}</p>
+          <button
+            type="button"
+            onClick={handleSignOut}
+            style={{ marginTop: '0.5rem', padding: '0.5rem 1rem' }}
+          >
             Sign Out
           </button>
-        </>
+        </div>
       ) : (
-        <>
+        <div style={{ marginBottom: '2rem' }}>
           <Link href="/login">
-            <button type="button">Log In</button>
+            <button type="button" style={{ marginRight: '0.5rem', padding: '0.5rem 1rem' }}>
+              Log In
+            </button>
           </Link>
-          <br></br>
           <Link href="/signup">
-            <button type="button">Sign Up</button>
+            <button type="button" style={{ padding: '0.5rem 1rem' }}>
+              Sign Up
+            </button>
           </Link>
-        </>
+        </div>
       )}
-      <br></br>
-      <p>Choose a game:</p>
-      <Link href="/analytical">
-        <button type="button">Word Search</button>
-      </Link>
-      <Link href="/speed">
-        <button type="button">Whack-a-Mole</button>
-      </Link>
-      <Link href="/memory">
-        <button type="button">Memory</button>
-      </Link>
-      <Link href="/logical">
-        <button type="button">Tower of Hanoi</button>
-      </Link>
-      <Link href="/pingpong">
-        <button type="button">Ping Pong</button>
-      </Link>
-    </main>
+
+      <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Choose a Game</h2>
+
+      <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+        {games.map((game) => (
+          <Link
+            key={game.href}
+            href={game.href}
+            style={{
+              display: 'block',
+              padding: '1.5rem',
+              border: '1px solid #ccc',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              color: '#333',
+            }}
+          >
+            <div style={{ fontWeight: 'bold' }}>{game.name}</div>
+            <div style={{ fontSize: '0.875rem', color: '#666' }}>{game.desc}</div>
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }

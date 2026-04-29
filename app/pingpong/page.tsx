@@ -1,80 +1,72 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 export default function Pingpong() {
-  const [leftPlayerPosition, setLeftPlayerPosition] = useState(0);
-  const [rightPlayerPosition, setRightPlayerPosition] = useState(0);
+  const [leftY, setLeftY] = useState(160);
+  const [rightY, setRightY] = useState(160);
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      switch (event.key) {
-        case 'w':
-          setLeftPlayerPosition((prev) => prev - 10);
-          break;
-        case 's':
-          setLeftPlayerPosition((prev) => prev + 10);
-          break;
-        case 'ArrowUp':
-          setRightPlayerPosition((prev) => prev - 10);
-          break;
-        case 'ArrowDown':
-          setRightPlayerPosition((prev) => prev + 10);
-          break;
-        default:
-          break;
-      }
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'w') setLeftY((p) => Math.max(0, p - 20));
+      if (e.key === 's') setLeftY((p) => Math.min(320, p + 20));
+      if (e.key === 'ArrowUp') setRightY((p) => Math.max(0, p - 20));
+      if (e.key === 'ArrowDown') setRightY((p) => Math.min(320, p + 20));
     };
-
-    const handleKeyUp = () => {
-      setLeftPlayerPosition(0);
-      setRightPlayerPosition(0);
-    };
-
     document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('keyup', handleKeyUp);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('keyup', handleKeyUp);
-    };
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   return (
-    <div>
+    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '2rem' }}>
       <h1>Ping Pong</h1>
-      <p>Left: W/S keys | Right: Arrow keys</p>
+      <p style={{ marginBottom: '1rem', color: '#666' }}>Left: W/S keys | Right: Arrow Up/Down</p>
+
       <div
         style={{
-          position: 'relative',
-          height: '400px',
           width: '600px',
-          border: '1px solid black',
+          height: '400px',
+          border: '2px solid #333',
+          position: 'relative',
+          margin: '0 auto',
         }}
       >
         <div
           style={{
             position: 'absolute',
             left: '10px',
-            top: `${leftPlayerPosition}px`,
+            top: leftY,
             width: '10px',
             height: '80px',
-            backgroundColor: 'blue',
+            backgroundColor: '#3498db',
           }}
         />
         <div
           style={{
             position: 'absolute',
             right: '10px',
-            top: `${rightPlayerPosition}px`,
+            top: rightY,
             width: '10px',
             height: '80px',
-            backgroundColor: 'red',
+            backgroundColor: '#e74c3c',
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            left: '295px',
+            top: '0',
+            width: '2px',
+            height: '400px',
+            backgroundColor: '#ccc',
           }}
         />
       </div>
-      <Link href="/">Back to Home</Link>
+
+      <Link href="/" style={{ display: 'inline-block', marginTop: '1rem' }}>
+        Back to Home
+      </Link>
     </div>
   );
 }
