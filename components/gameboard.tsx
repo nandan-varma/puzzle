@@ -1,9 +1,21 @@
-const GameBoard = ({ cards, onCardClick }) => {
+interface Card {
+  value: string;
+  flipped: boolean;
+}
+
+interface GameBoardProps {
+  cards: Card[];
+  onCardClick: (index: number) => void;
+}
+
+const GameBoard = ({ cards, onCardClick }: GameBoardProps) => {
   return (
     <div className="game-board">
       {cards.map((card, index) => (
         <div
           key={index}
+          role="button"
+          tabIndex={0}
           className={`card ${card.flipped ? '' : 'flipped'}`}
           onClick={() => onCardClick(index)}
         >
@@ -11,14 +23,8 @@ const GameBoard = ({ cards, onCardClick }) => {
           <div className="card-back"></div>
         </div>
       ))}
-      <style jsx>{`
-          .game-board {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-gap: 10px;
-          }
-        `}</style>
     </div>
   );
 };
+
 export default GameBoard;
