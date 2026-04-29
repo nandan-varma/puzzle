@@ -10,13 +10,19 @@ export default function Logical() {
 
   const handlePoleClick = (poleIndex: number) => {
     const newBlobs = [...blobs];
+    const pole = newBlobs[poleIndex];
+
+    if (pole === undefined) {
+      return;
+    }
+
     if (selectedBlob === null) {
-      const topBlob = newBlobs[poleIndex].pop();
+      const topBlob = pole.pop();
       setSelectedBlob(topBlob ?? null);
     } else {
-      const topBlob = newBlobs[poleIndex][newBlobs[poleIndex].length - 1];
+      const topBlob = pole[pole.length - 1];
       if (topBlob === undefined || selectedBlob < topBlob) {
-        newBlobs[poleIndex].push(selectedBlob);
+        pole.push(selectedBlob);
         setSelectedBlob(null);
       }
     }

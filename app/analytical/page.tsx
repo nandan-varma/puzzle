@@ -16,7 +16,7 @@ const castleWords = [
   ['S', 'T', 'H', 'R', 'O', 'N', 'E', 'P', 'S', 'A'],
 ];
 
-const validWords = [
+const validWords: string[] = [
   'CASTLE',
   'KNIGHT',
   'CROWN',
@@ -46,8 +46,14 @@ export default function Analytical() {
   };
 
   const handleMouseUp = () => {
+    if (selectedCells.length === 0) {
+      return;
+    }
     const selectedWord = selectedCells
-      .map(([row, col]) => castleWords[row][col])
+      .map(([row, col]) => {
+        const rowData = castleWords[row];
+        return rowData?.[col] ?? '';
+      })
       .join('');
     if (validWords.includes(selectedWord)) {
       setFoundWords([...foundWords, selectedWord]);
@@ -63,6 +69,7 @@ export default function Analytical() {
 
   const renderCell = (row: number, col: number) => {
     const isSelected = selectedCells.some(([r, c]) => r === row && c === col);
+    const letter = castleWords[row]?.[col] ?? '';
     return (
       <td
         key={`${row}+${col}`}
@@ -73,7 +80,7 @@ export default function Analytical() {
         onMouseEnter={() => handleMouseEnter(row, col)}
         onMouseUp={handleMouseUp}
       >
-        {castleWords[row][col]}
+        {letter}
       </td>
     );
   };
