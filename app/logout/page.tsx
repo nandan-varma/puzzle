@@ -1,9 +1,9 @@
 'use client';
 
-import { auth } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { auth } from '@/lib/firebase';
 
 export default function Logout() {
   const router = useRouter();

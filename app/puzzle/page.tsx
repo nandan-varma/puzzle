@@ -1,23 +1,15 @@
 'use client';
 
-import { auth, db } from '@/lib/firebase';
-import { signOut } from 'firebase/auth';
 import { get, ref } from 'firebase/database';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { auth, db } from '@/lib/firebase';
 
 interface UserProgress {
   level: number;
 }
 
-interface UserData {
-  id: string;
-  level: number;
-}
-
 export default function Puzzle() {
-  const router = useRouter();
   const [progress, setProgress] = useState<UserProgress>({ level: 0 });
 
   const getUserId = (): string | null => {

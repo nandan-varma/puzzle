@@ -74,8 +74,6 @@ export default function Analytical() {
       <td
         key={`${row}+${col}`}
         className={`cell ${isSelected ? 'selected' : ''}`}
-        role="button"
-        tabIndex={0}
         onMouseDown={() => handleMouseDown(row, col)}
         onMouseEnter={() => handleMouseEnter(row, col)}
         onMouseUp={handleMouseUp}

@@ -104,24 +104,22 @@ export default function Memory() {
   };
 
   return (
-    <>
-      <div className="game-container">
-        <div>Time: {elapsedTime.toFixed(1)}s</div>
-        <div className="game-board">
-          {cards.map((card, index) => (
-            <div
-              key={index}
-              role="button"
-              tabIndex={0}
-              className={`card ${card.flipped ? '' : 'flipped'}`}
-              onClick={() => handleCardClick(index)}
-            >
-              <div className="card-front">{card.value}</div>
-              <div className="card-back"></div>
-            </div>
-          ))}
-        </div>
+    <div className="game-container">
+      <div>Time: {elapsedTime.toFixed(1)}s</div>
+      <div className="game-board">
+        {cards.map((card, index) => (
+          <div
+            key={index}
+            role="button"
+            tabIndex={0}
+            className={`card ${card.flipped ? '' : 'flipped'}`}
+            onClick={() => handleCardClick(index)}
+          >
+            <div className="card-front">{card.value}</div>
+            <div className="card-back"></div>
+          </div>
+        ))}
       </div>
-    </>
+    </div>
   );
 }

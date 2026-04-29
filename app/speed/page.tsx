@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Speed() {
   const [score, setScore] = useState(0);
@@ -8,12 +8,17 @@ export default function Speed() {
   const [gameOver, setGameOver] = useState(false);
   const [timeLeft, setTimeLeft] = useState(10);
 
+  const randomHoleRef = useRef(() => {
+    const hole = Math.floor(Math.random() * 9);
+    setCurrent(hole);
+  });
+
   useEffect(() => {
     if (gameOver) {
       return;
     }
     const timer = setInterval(() => {
-      randomHole();
+      randomHoleRef.current();
     }, 800);
     return () => clearInterval(timer);
   }, [gameOver]);
@@ -34,11 +39,6 @@ export default function Speed() {
     }
   }, [timeLeft]);
 
-  const randomHole = () => {
-    const hole = Math.floor(Math.random() * 9);
-    setCurrent(hole);
-  };
-
   const hit = (id: number) => {
     if (id === current) {
       setScore((prev) => prev + 1);
@@ -57,14 +57,14 @@ export default function Speed() {
       <h1>Whack-a-Mole</h1>
       <h2>Score: {score}</h2>
       <h2>Time Left: {timeLeft}</h2>
-      {gameOver && (
+      {gameOver ? (
         <>
           <h2>Game Over</h2>
           <button type="button" onClick={replay}>
             Replay
           </button>
         </>
-      )}
+      ) : null}
       <table>
         <tbody>
           {Array.from({ length: 3 }).map((_, rowIndex) => (
@@ -74,8 +74,6 @@ export default function Speed() {
                 return (
                   <td
                     key={id}
-                    role="button"
-                    tabIndex={0}
                     onClick={() => hit(id)}
                     style={{
                       backgroundColor: id === current ? 'green' : 'white',
