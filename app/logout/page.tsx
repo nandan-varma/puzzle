@@ -3,8 +3,8 @@
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { auth } from '@/lib/firebase';
 import { Button, Container } from '@/components/ui';
+import { auth } from '@/lib/firebase';
 
 export default function Logout() {
   const router = useRouter();

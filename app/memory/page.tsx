@@ -1,8 +1,8 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { Button, Container } from '@/components/ui';
 
 function shuffle<T>(arr: T[]): T[] {
@@ -24,16 +24,17 @@ interface Card {
   flipped: boolean;
 }
 
+const VALUES = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+
 export default function Memory() {
   const router = useRouter();
-  const values = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
   const [cards, setCards] = useState<Card[]>([]);
   const [start, setStart] = useState<number | null>(null);
   const [time, setTime] = useState(0);
   const [flipped, setFlipped] = useState<number[]>([]);
 
   useEffect(() => {
-    const shuffled = shuffle([...values, ...values]) as string[];
+    const shuffled = shuffle([...VALUES, ...VALUES]) as string[];
     setCards(shuffled.map((v) => ({ value: v, flipped: false })));
   }, []);
 
@@ -57,7 +58,9 @@ export default function Memory() {
     if (!currentCard || currentCard.flipped) return;
     if (!start) setStart(Date.now());
 
-    const next = cards.map((c, idx) => (idx === i ? { ...c, flipped: true } : c));
+    const next = cards.map((c, idx) =>
+      idx === i ? { ...c, flipped: true } : c
+    );
     setCards(next);
 
     const nextFlipped = [...flipped, i];
@@ -72,7 +75,9 @@ export default function Memory() {
         setFlipped([]);
       } else {
         setTimeout(() => {
-          const reset = cards.map((c, idx) => (idx === a || idx === b ? { ...c, flipped: false } : c));
+          const reset = cards.map((c, idx) =>
+            idx === a || idx === b ? { ...c, flipped: false } : c
+          );
           setCards(reset);
           setFlipped([]);
         }, 800);
@@ -81,7 +86,7 @@ export default function Memory() {
   };
 
   const reset = () => {
-    const shuffled = shuffle([...values, ...values]) as string[];
+    const shuffled = shuffle([...VALUES, ...VALUES]) as string[];
     setCards(shuffled.map((v) => ({ value: v, flipped: false })));
     setStart(null);
     setTime(0);
@@ -91,7 +96,9 @@ export default function Memory() {
   return (
     <Container>
       <h1 style={{ marginBottom: '0.25rem' }}>Memory</h1>
-      <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>Find all matching pairs</p>
+      <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>
+        Find all matching pairs
+      </p>
 
       <p style={{ marginBottom: '1rem', fontSize: '1.25rem' }}>
         Time: <strong>{time.toFixed(1)}s</strong>
@@ -111,6 +118,8 @@ export default function Memory() {
         {cards.map((card, i) => (
           <div
             key={i}
+            role="button"
+            tabIndex={0}
             onClick={() => click(i)}
             style={{
               aspectRatio: '1',
@@ -130,7 +139,11 @@ export default function Memory() {
         ))}
       </div>
 
-      <Button onClick={reset} variant="secondary" style={{ marginRight: '1rem' }}>
+      <Button
+        onClick={reset}
+        variant="secondary"
+        style={{ marginRight: '1rem' }}
+      >
         Reset
       </Button>
       <Link href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>

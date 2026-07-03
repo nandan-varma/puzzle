@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
-import { Container, Button } from '@/components/ui';
+import { useState } from 'react';
+import { Button, Container } from '@/components/ui';
 
 const grid = [
   ['C', 'R', 'O', 'W', 'N', 'S', 'A', 'R', 'M', 'O'],
@@ -17,7 +17,17 @@ const grid = [
   ['S', 'T', 'H', 'R', 'O', 'N', 'E', 'P', 'S', 'A'],
 ];
 
-const words = ['CASTLE', 'KNIGHT', 'CROWN', 'ROYALTY', 'ARCHERY', 'GUARDS', 'MOAT', 'MONARCHY', 'THRONE'];
+const words = [
+  'CASTLE',
+  'KNIGHT',
+  'CROWN',
+  'ROYALTY',
+  'ARCHERY',
+  'GUARDS',
+  'MOAT',
+  'MONARCHY',
+  'THRONE',
+];
 
 export default function Analytical() {
   const [selected, setSelected] = useState<[number, number][]>([]);
@@ -69,10 +79,14 @@ export default function Analytical() {
       >
         {grid.map((row, r) =>
           row.map((letter, c) => {
-            const isSelected = selected.some(([sr, sc]) => sr === r && sc === c);
+            const isSelected = selected.some(
+              ([sr, sc]) => sr === r && sc === c
+            );
             return (
               <div
                 key={`${r}-${c}`}
+                role="button"
+                tabIndex={0}
                 onMouseDown={() => handleStart(r, c)}
                 onMouseEnter={() => handleMove(r, c)}
                 onMouseUp={handleEnd}
@@ -102,7 +116,9 @@ export default function Analytical() {
       </p>
 
       {found.length === 5 && (
-        <p style={{ color: '#10b981', fontWeight: 'bold', marginBottom: '1rem' }}>
+        <p
+          style={{ color: '#10b981', fontWeight: 'bold', marginBottom: '1rem' }}
+        >
           🎉 All words found! Great job!
         </p>
       )}

@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { Button, Container } from '@/components/ui';
 
 export default function Speed() {
@@ -44,7 +44,9 @@ export default function Speed() {
   return (
     <Container>
       <h1 style={{ marginBottom: '0.25rem' }}>Whack-a-Mole</h1>
-      <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>Click the green targets!</p>
+      <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>
+        Click the green targets!
+      </p>
 
       <p style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>
         Score: <strong>{score}</strong>
@@ -53,7 +55,13 @@ export default function Speed() {
       </p>
 
       {over && (
-        <p style={{ marginBottom: '1rem', fontSize: '1.25rem', color: '#10b981' }}>
+        <p
+          style={{
+            marginBottom: '1rem',
+            fontSize: '1.25rem',
+            color: '#10b981',
+          }}
+        >
           Game Over! Final Score: {score}
         </p>
       )}
@@ -72,6 +80,8 @@ export default function Speed() {
         {Array.from({ length: 9 }).map((_, i) => (
           <div
             key={i}
+            role="button"
+            tabIndex={0}
             onClick={() => hit(i)}
             style={{
               aspectRatio: '1',
@@ -86,7 +96,10 @@ export default function Speed() {
       <Button onClick={restart} variant={over ? 'primary' : 'secondary'}>
         {over ? 'Play Again' : 'Restart'}
       </Button>
-      <Link href="/" style={{ marginLeft: '1rem', color: '#6b7280', textDecoration: 'none' }}>
+      <Link
+        href="/"
+        style={{ marginLeft: '1rem', color: '#6b7280', textDecoration: 'none' }}
+      >
         Back to Home
       </Link>
     </Container>

@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
 import { Container } from '@/components/ui';
 
 interface Ball {
@@ -67,7 +67,8 @@ export default function Pingpong() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'w' || e.key === 'W') setLeftY((p) => Math.max(0, p - 15));
-      if (e.key === 's' || e.key === 'S') setLeftY((p) => Math.min(320, p + 15));
+      if (e.key === 's' || e.key === 'S')
+        setLeftY((p) => Math.min(320, p + 15));
       if (e.key === 'ArrowUp') setRightY((p) => Math.max(0, p - 15));
       if (e.key === 'ArrowDown') setRightY((p) => Math.min(320, p + 15));
     };
@@ -105,13 +106,49 @@ export default function Pingpong() {
       </div>
 
       {/* Mobile controls */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-        <button onClick={() => handleTouch('left', 'up')} style={{ padding: '0.5rem 1rem' }}>↑ Left</button>
-        <button onClick={() => handleTouch('right', 'up')} style={{ padding: '0.5rem 1rem' }}>↑ Right</button>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: '0.5rem',
+        }}
+      >
+        <button
+          type="button"
+          onClick={() => handleTouch('left', 'up')}
+          style={{ padding: '0.5rem 1rem' }}
+        >
+          ↑ Left
+        </button>
+        <button
+          type="button"
+          onClick={() => handleTouch('right', 'up')}
+          style={{ padding: '0.5rem 1rem' }}
+        >
+          ↑ Right
+        </button>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-        <button onClick={() => handleTouch('left', 'down')} style={{ padding: '0.5rem 1rem' }}>↓ Left</button>
-        <button onClick={() => handleTouch('right', 'down')} style={{ padding: '0.5rem 1rem' }}>↓ Right</button>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: '1rem',
+        }}
+      >
+        <button
+          type="button"
+          onClick={() => handleTouch('left', 'down')}
+          style={{ padding: '0.5rem 1rem' }}
+        >
+          ↓ Left
+        </button>
+        <button
+          type="button"
+          onClick={() => handleTouch('right', 'down')}
+          style={{ padding: '0.5rem 1rem' }}
+        >
+          ↓ Right
+        </button>
       </div>
 
       <div
@@ -180,11 +217,23 @@ export default function Pingpong() {
         />
       </div>
 
-      <button onClick={restart} style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}>
+      <button
+        type="button"
+        onClick={restart}
+        style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}
+      >
         Restart
       </button>
 
-      <Link href="/" style={{ display: 'inline-block', marginLeft: '1rem', marginTop: '1rem', color: '#6b7280' }}>
+      <Link
+        href="/"
+        style={{
+          display: 'inline-block',
+          marginLeft: '1rem',
+          marginTop: '1rem',
+          color: '#6b7280',
+        }}
+      >
         Back to Home
       </Link>
     </Container>

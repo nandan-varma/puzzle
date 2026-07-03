@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface ContainerProps {
   children: ReactNode;
@@ -85,11 +85,20 @@ export function Button({
   const variants = {
     primary: { backgroundColor: '#3b82f6', color: '#fff' },
     secondary: { backgroundColor: '#6b7280', color: '#fff' },
-    outline: { backgroundColor: 'transparent', color: '#3b82f6', border: '1px solid #3b82f6' },
+    outline: {
+      backgroundColor: 'transparent',
+      color: '#3b82f6',
+      border: '1px solid #3b82f6',
+    },
   };
 
   return (
-    <button type={type} onClick={onClick} disabled={disabled} style={{ ...baseStyle, ...variants[variant] }}>
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      style={{ ...baseStyle, ...variants[variant] }}
+    >
       {children}
     </button>
   );
@@ -106,10 +115,27 @@ interface InputProps {
   error?: string;
 }
 
-export function Input({ label, id, type = 'text', value, onChange, disabled, placeholder, error }: InputProps) {
+export function Input({
+  label,
+  id,
+  type = 'text',
+  value,
+  onChange,
+  disabled,
+  placeholder,
+  error,
+}: InputProps) {
   return (
     <div style={{ marginBottom: '1rem' }}>
-      <label htmlFor={id} style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500', color: '#374151' }}>
+      <label
+        htmlFor={id}
+        style={{
+          display: 'block',
+          marginBottom: '0.5rem',
+          fontWeight: '500',
+          color: '#374151',
+        }}
+      >
         {label}
       </label>
       <input
@@ -129,7 +155,17 @@ export function Input({ label, id, type = 'text', value, onChange, disabled, pla
           backgroundColor: disabled ? '#f9fafb' : '#fff',
         }}
       />
-      {error && <p style={{ color: '#ef4444', fontSize: '0.875rem', marginTop: '0.25rem' }}>{error}</p>}
+      {error && (
+        <p
+          style={{
+            color: '#ef4444',
+            fontSize: '0.875rem',
+            marginTop: '0.25rem',
+          }}
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 }
@@ -182,7 +218,15 @@ export function GameCard({ href, name, desc, color }: GameCardProps) {
         transition: 'transform 0.2s, box-shadow 0.2s',
       }}
     >
-      <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: color, marginBottom: '0.75rem' }} />
+      <div
+        style={{
+          width: '8px',
+          height: '8px',
+          borderRadius: '50%',
+          backgroundColor: color,
+          marginBottom: '0.75rem',
+        }}
+      />
       <div style={{ fontWeight: '600', fontSize: '1.125rem' }}>{name}</div>
       <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>{desc}</div>
     </a>
