@@ -1,24 +1,16 @@
 'use client';
 
+import { signOut } from 'firebase/auth';
 import { get, ref } from 'firebase/database';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { auth, db } from '@/lib/firebase';
 
-interface UserProgress {
-  level: number;
-}
-
 export default function Puzzle() {
-  const [progress, setProgress] = useState<UserProgress>({ level: 0 });
+  const [progress, setProgress] = useState({ level: 0 });
   const [isLoading, setIsLoading] = useState(true);
 
-  const getUserId = (): string | null => {
-    const user = auth.currentUser;
-    return user?.uid ?? null;
-  };
-
-  const userId = getUserId();
+  const userId = auth.currentUser?.uid ?? null;
 
   useEffect(() => {
     if (!userId) {
@@ -49,11 +41,11 @@ export default function Puzzle() {
         <Link href="/login">
           <button type="button">Log In</button>
         </Link>
-        <br></br>
+        <br />
         <Link href="/signup">
           <button type="button">Sign Up</button>
         </Link>
-        <br></br>
+        <br />
         <Link href="/">Browse Games (No Progress)</Link>
       </div>
     );
@@ -67,10 +59,10 @@ export default function Puzzle() {
       <Link href="/">
         <button type="button">Play Games</button>
       </Link>
-      <br></br>
-      <Link href="/logout">
-        <button type="button">Sign Out</button>
-      </Link>
+      <br />
+      <button type="button" onClick={() => signOut(auth)}>
+        Sign Out
+      </button>
     </div>
   );
 }

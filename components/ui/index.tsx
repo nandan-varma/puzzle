@@ -50,7 +50,6 @@ interface ButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   variant?: 'primary' | 'secondary' | 'outline';
-  size?: 'sm' | 'md' | 'lg';
   style?: Record<string, string | number>;
 }
 
@@ -60,17 +59,12 @@ export function Button({
   onClick,
   disabled,
   variant = 'primary',
-  size = 'md',
   style,
 }: ButtonProps) {
-  const sizes = {
-    sm: { padding: '0.5rem 1rem', fontSize: '0.875rem' },
-    md: { padding: '0.75rem 1.5rem', fontSize: '1rem' },
-    lg: { padding: '1rem 2rem', fontSize: '1.125rem' },
-  };
-
   const baseStyle: Record<string, string | number> = {
     minHeight: '44px',
+    padding: '0.75rem 1.5rem',
+    fontSize: '1rem',
     borderRadius: '8px',
     fontWeight: '500',
     cursor: disabled ? 'not-allowed' : 'pointer',
@@ -78,7 +72,6 @@ export function Button({
     transition: 'all 0.2s',
     border: 'none',
     width: '100%',
-    ...sizes[size],
     ...style,
   };
 
@@ -167,33 +160,6 @@ export function Input({
         </p>
       )}
     </div>
-  );
-}
-
-interface LinkButtonProps {
-  children: ReactNode;
-  href: string;
-  style?: Record<string, string | number>;
-}
-
-export function LinkButton({ children, href, style }: LinkButtonProps) {
-  return (
-    <a
-      href={href}
-      style={{
-        display: 'inline-block',
-        padding: '0.75rem 1.5rem',
-        borderRadius: '8px',
-        backgroundColor: '#3b82f6',
-        color: '#fff',
-        textDecoration: 'none',
-        fontWeight: '500',
-        minHeight: '44px',
-        ...style,
-      }}
-    >
-      {children}
-    </a>
   );
 }
 
